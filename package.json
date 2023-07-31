@@ -7,11 +7,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
+    "save": "npm run predeploy && npm run deploy",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "homepage": "https://lbare.github.io/golfScores/",
+  "homepage": "https://lbare.github.io/golfScores",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
