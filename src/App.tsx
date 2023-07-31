@@ -6,13 +6,13 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <Navbar />
+    <div className="flex h-screen w-screen flex-col">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/scorecard" element={<Scorecard />} />
       </Routes>
-    </>
+      <Navbar />
+    </div>
   );
 }
 
