@@ -6,7 +6,7 @@ import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="flex h-screen w-screen flex-col bg-neutral-950">
+    <div className="flex h-screen w-screen flex-col bg-green-500">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/players" element={<Players />} />
