@@ -2,3 +2,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* This helps in preventing the page from scrolling */
+}
+
+body {
+  overscroll-behavior: none; /* Disables iOS Safari bounce effect */
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(
+    safe-area-inset-left
+  ); /* Ensuring content isn't obscured by device's notch or rounded corners */
+}

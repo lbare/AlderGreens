@@ -4,7 +4,7 @@ import HomeBG from "../assets/HomeBG.png";
 const Home = () => {
   return (
     <div
-      className="flex w-full h-screen justify-center items-center"
+      className="flex flex-col h-full w-full justify-center items-center"
       style={{
         backgroundImage: `url(${HomeBG})`,
         backgroundSize: "cover",

@@ -15,19 +15,19 @@ const Tracking = () => {
       className="flex h-full w-full justify-between items-center flex-col"
       style={{
         backgroundImage: `url(${ScoreBG})`,
-        backgroundSize: "contain",
+        backgroundSize: "cover",
       }}
     >
       <img
         src={Hole1}
         alt="ScoreBG"
         style={{
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           height: "60%",
         }}
-        className="absolute left-0 right-0 top-0 bottom-0 m-auto"
+        className="absolute left-0 right-0 top-12 bottom-0 m-auto"
       />
-      <div className="flex w-full mt-4 justify-evenly">
+      <div className="flex w-full mt-2 justify-evenly">
         <div className="flex flex-col items-center">
           <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
             HOLE
@@ -74,10 +74,10 @@ const Tracking = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-full mb-16 justify-evenly">
+      <div className="flex w-full mb-4 justify-evenly">
         <div className="flex flex-col items-center">
           <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
-            TOTAL
+            PUTTS
           </h1>
           <div
             className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
