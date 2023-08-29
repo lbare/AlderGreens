@@ -1,5 +1,6 @@
 import ScoreBG from "../assets/ScoreBG.png";
 import Hole1 from "../assets/holes/1.png";
+import CircularButton from "../components/CircularButton";
 // import Hole2 from "../assets/holes/2.png";
 // import Hole3 from "../assets/holes/3.png";
 // import Hole4 from "../assets/holes/4.png";
@@ -74,22 +75,55 @@ const Tracking = () => {
           </div>
         </div>
       </div>
-      <div className="flex w-full mb-4 justify-evenly">
-        <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
-            PUTTS
-          </h1>
-          <div
-            className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
-            style={{
-              boxShadow: "5px 5px #2d603a",
-            }}
-          >
-            <h1 className="font-archivo font-black text-green-700 text-4xl">
-              21
+      <div className="flex w-full h-1/4 mb-8 justify-between items-end px-4">
+        <div className="grid grid-cols-3 h-16 gap-6 w-4/6">
+          <CircularButton icon="minus" />
+          <div className="flex flex-col items-center">
+            <div
+              className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+              style={{
+                boxShadow: "5px 5px #2d603a",
+              }}
+            >
+              <h1 className="font-archivo font-black text-green-700 text-4xl">
+                2
+              </h1>
+            </div>
+            <h1 className="pt-1 font-archivo font-medium italic text-green-700 opacity-75">
+              PUTTS
             </h1>
           </div>
+          <CircularButton icon="plus" />
         </div>
+        <div className="grid grid-rows-2 grid-cols-1 h-full items-end">
+          <CircularButton icon="arrow" />
+          <CircularButton icon="check" />
+        </div>
+        {/* <div className="flex w-4/6 border border-red-300">
+          <div className="flex flex-row items-start justify-between w-full border">
+            <CircularButton icon="minus" />
+            <div className="flex flex-col items-center">
+              <div
+                className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+                style={{
+                  boxShadow: "5px 5px #2d603a",
+                }}
+              >
+                <h1 className="font-archivo font-black text-green-700 text-4xl">
+                  2
+                </h1>
+              </div>
+              <h1 className="pt-1 font-archivo font-medium italic text-green-700 opacity-75">
+                PUTTS
+              </h1>
+            </div>
+            <CircularButton icon="plus" />
+          </div>
+        </div>
+        <div className="flex flex-col h-36 justify-between border border-blue-400">
+          <CircularButton icon="arrow" />
+          <CircularButton icon="check" />
+        </div> */}
       </div>
     </div>
   );
