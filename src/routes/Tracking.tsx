@@ -17,11 +17,11 @@ const Tracking = () => {
   const [score, setScore] = useState<number>(0);
   const [ballPosition, setBallPosition] = useState({
     x: "49%",
-    y: "102%",
+    y: "89.5%",
   });
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "49%", y: "102%" }]);
+  >([{ x: "49%", y: "89.5%" }]);
 
   const incrementPutts = () => {
     setPutts((prevPutts) => prevPutts + 1);
@@ -37,33 +37,35 @@ const Tracking = () => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+    const xPercent = (x / rect.width) * 100;
+    const yPercent = (y / rect.height) * 100;
 
     if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
       const prevShot = shotHistory[shotHistory.length - 1];
 
-      let lineLength, angle, adjustedLength;
-      const shotRadius = 5; // half the size of the shot div
-      const ballRadius = 10; // half the size of the ball div
+      let lineLength: number, angle: number;
 
       if (prevShot) {
-        const dx = x - parseFloat(prevShot.x);
-        const dy = y - parseFloat(prevShot.y);
-        lineLength = Math.sqrt(dx * dx + dy * dy);
-        angle = Math.atan2(dy, dx); // Keep this in radians for now
+        const prevXPercent = (parseFloat(prevShot.x) / 100) * rect.width;
+        const prevYPercent = (parseFloat(prevShot.y) / 100) * rect.height;
+        const dx = x - prevXPercent;
+        const dy = y - prevYPercent;
 
-        // Adjust the line's length to start at the edge of the previous shot and end at the edge of the current shot
-        adjustedLength = lineLength - shotRadius - ballRadius;
+        lineLength = Math.sqrt(dx * dx + dy * dy);
+        angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert radians to degrees
+
+        // Note: Adjustments for the radius can be done when rendering, or here based on your needs.
       }
 
-      setBallPosition({ x: x + "px", y: y + "px" });
+      setBallPosition({ x: xPercent + "%", y: yPercent + "%" });
       setScore((prevScore) => prevScore + 1);
       setShotHistory((prevHistory) => [
         ...prevHistory,
         {
-          x: x + "px",
-          y: y + "px",
-          length: adjustedLength ? adjustedLength + "px" : undefined,
-          angle: angle * (180 / Math.PI), // Convert to degrees here
+          x: xPercent + "%",
+          y: yPercent + "%",
+          length: lineLength ? lineLength + "px" : undefined,
+          angle: angle,
         },
       ]);
     }
@@ -71,22 +73,13 @@ const Tracking = () => {
 
   return (
     <div
-      className="flex h-full w-full justify-between items-center flex-col"
+      className="flex h-full w-full justify-center items-center flex-col"
       style={{
         backgroundImage: `url(${ScoreBG})`,
         backgroundSize: "cover",
       }}
     >
-      <img
-        src={Hole1}
-        alt="ScoreBG"
-        style={{
-          backgroundSize: "cover",
-          height: "60%",
-        }}
-        className="absolute left-0 right-0 top-12 bottom-0 m-auto"
-      />
-      <div className="flex w-full mt-2 justify-evenly">
+      <div className="flex w-full mt-2 justify-evenly border absolute top-0">
         <div className="flex flex-col items-center">
           <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
             HOLE
@@ -134,9 +127,15 @@ const Tracking = () => {
         </div>
       </div>
       <div
-        className="flex w-4/6 h-full justify-between items-center"
+        className="flex w-4/6 h-96 mt-8 justify-between items-center border border-red-500"
         onClick={handleTap}
-        style={{ position: "relative" }}
+        style={{
+          position: "relative",
+          backgroundImage: `url(${Hole1})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
       >
         <div
           style={{
@@ -164,7 +163,6 @@ const Tracking = () => {
                 borderRadius: "50%",
                 backgroundColor: "black",
                 transform: "translate(-50%, -50%)",
-                opacity: 0.7,
                 zIndex: 1,
               } as never
             }
@@ -173,20 +171,21 @@ const Tracking = () => {
               <div
                 style={{
                   position: "absolute",
-                  backgroundColor: "white",
+                  backgroundColor: "black",
                   width: shot.length,
-                  height: "2px",
+                  opacity: 0.7,
+                  height: "6px",
                   top: "50%",
                   left: "50%",
                   transform: `translate(-50%, -50%) rotate(${shot.angle}deg)`,
-                  zIndex: -1,
+                  zIndex: 0,
                 }}
               ></div>
             )}
           </div>
         ))}
       </div>
-      <div className="flex w-full h-1/4 mb-8 justify-between items-end px-4">
+      <div className="flex w-full h-1/4 mb-8 justify-between items-end px-4 border absolute bottom-0">
         <div className="grid grid-cols-3 h-16 gap-6 w-4/6">
           <CircularButton icon="minus" onClick={decrementPutts} />
           <div className="flex flex-col items-center">
