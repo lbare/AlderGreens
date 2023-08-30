@@ -103,6 +103,15 @@ const Tracking = () => {
     setScore((prevScore) => prevScore - 1);
   };
 
+  const undoShot = () => {
+    setShotHistory((prevHistory) => prevHistory.slice(0, -1));
+    setScore((prevScore) => prevScore - 1);
+  };
+
+  const submitScore = () => {
+    console.log("Score submitted!");
+  };
+
   const handleTap = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     console.log("X:", e.clientX - rect.left, "Y:", e.clientY - rect.top);
@@ -219,8 +228,12 @@ const Tracking = () => {
           <CircularButton icon="plus" onClick={incrementPutts} />
         </div>
         <div className="grid grid-rows-2 grid-cols-1 h-36 items-end">
-          <CircularButton icon="arrow" />
-          <CircularButton icon="check" />
+          {shotHistory.length > 1 ? (
+            <CircularButton icon="arrow" onClick={undoShot} />
+          ) : (
+            <div className="h-16 w-16"></div>
+          )}
+          <CircularButton icon="check" onClick={submitScore} />
         </div>
       </div>
     </div>
