@@ -1,25 +1,62 @@
 import ScoreBG from "../assets/ScoreBG.png";
-import Hole1 from "../assets/holes/1.png";
 import CircularButton from "../components/CircularButton";
 import React, { useState, useRef, useEffect } from "react";
 import "../App.css";
 import * as d3 from "d3";
-// import Hole2 from "../assets/holes/2.png";
-// import Hole3 from "../assets/holes/3.png";
-// import Hole4 from "../assets/holes/4.png";
-// import Hole5 from "../assets/holes/5.png";
-// import Hole6 from "../assets/holes/6.png";
-// import Hole7 from "../assets/holes/7.png";
-// import Hole8 from "../assets/holes/8.png";
-// import Hole9 from "../assets/holes/9.png";
+import Hole1 from "../assets/holes/1.png";
+import Hole2 from "../assets/holes/2.png";
+import Hole3 from "../assets/holes/3.png";
+import Hole4 from "../assets/holes/4.png";
+import Hole5 from "../assets/holes/5.png";
+import Hole6 from "../assets/holes/6.png";
+import Hole7 from "../assets/holes/7.png";
+import Hole8 from "../assets/holes/8.png";
+import Hole9 from "../assets/holes/9.png";
 
 const Tracking = () => {
+  const holeImages = [
+    Hole1,
+    Hole2,
+    Hole3,
+    Hole4,
+    Hole5,
+    Hole6,
+    Hole7,
+    Hole8,
+    Hole9,
+  ];
   const [putts, setPutts] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
+  const [totalScore, setTotalScore] = useState<number>(0);
   const svgRef = useRef(null);
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "49.3%", y: "90.5%" }]);
+  >([{ x: "50.5%", y: "90.5%" }]);
+  const [currentHole, setCurrentHole] = useState<number>(0);
+  const [holes, setHoles] = useState<
+    Array<{
+      putts: number;
+      score: number;
+      shotHistory: Array<{
+        x: string;
+        y: string;
+        length?: string;
+        angle?: number;
+      }>;
+    }>
+  >([]);
+
+  useEffect(() => {
+    if (!holes[currentHole]) {
+      setHoles((prev) => [
+        ...prev,
+        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "90.5%" }] },
+      ]);
+    }
+    setPutts(holes[currentHole]?.putts || 0);
+    setScore(holes[currentHole]?.score || 0);
+    setShotHistory(holes[currentHole]?.shotHistory || []);
+  }, [currentHole, holes]);
 
   useEffect(() => {
     if (shotHistory.length < 1) return;
@@ -69,6 +106,38 @@ const Tracking = () => {
         ) => (i === shotHistory.length - 1 ? "white" : "black")
       );
 
+    const defs = svg.append("defs");
+
+    const filter = defs
+      .append("filter")
+      .attr("id", "dropshadow")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "200%")
+      .attr("height", "200%");
+
+    filter
+      .append("feFlood")
+      .attr("flood-color", "black")
+      .attr("result", "floodOutput");
+
+    filter
+      .append("feComposite")
+      .attr("in", "floodOutput")
+      .attr("in2", "SourceAlpha")
+      .attr("operator", "in")
+      .attr("result", "compositeOutput");
+
+    filter
+      .append("feOffset")
+      .attr("dx", 1.5)
+      .attr("dy", 1.5)
+      .attr("result", "offsetOutput");
+
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode").attr("in", "offsetOutput");
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
     svg
       .selectAll("text")
       .data(shotHistory)
@@ -77,9 +146,8 @@ const Tracking = () => {
       .attr("x", (d: { x: string }) => (parseFloat(d.x) / 100) * svgWidth)
       .attr("y", (d: { y: string }) => {
         const yPos = (parseFloat(d.y) / 100) * svgHeight;
-        return yPos < 20 ? yPos + 25 : yPos - 15; // assuming 20 as a buffer value
+        return yPos < 25 ? yPos + 35 : yPos - 15; // assuming 20 as a buffer value
       })
-
       .text(
         (
           _d: { x: string; y: string; length?: string; angle?: number },
@@ -87,29 +155,55 @@ const Tracking = () => {
         ) => (i !== 0 ? i.toString() : "")
       )
       .attr("fill", "white")
-      .attr("font-size", "16px")
+      .attr("font-size", "24px")
       .attr("text-anchor", "middle")
       .attr("font-family", "Archivo")
-      .attr("font-weight", "bold");
+      .attr("font-weight", "900")
+      .attr("stroke", "black")
+      .attr("stroke-width", "6px")
+      .attr("paint-order", "stroke fill")
+      .attr("filter", "url(#dropshadow)");
   }, [shotHistory]);
 
   const incrementPutts = () => {
     setPutts((prevPutts) => prevPutts + 1);
     setScore((prevScore) => prevScore + 1);
+    setTotalScore((prevScore) => prevScore + 1);
   };
 
   const decrementPutts = () => {
+    if (putts === 0) return;
     setPutts((prevPutts) => prevPutts - 1);
     setScore((prevScore) => prevScore - 1);
+    setTotalScore((prevScore) => prevScore - 1);
   };
 
   const undoShot = () => {
     setShotHistory((prevHistory) => prevHistory.slice(0, -1));
     setScore((prevScore) => prevScore - 1);
+    setTotalScore((prevScore) => prevScore - 1);
   };
 
   const submitScore = () => {
-    console.log("Score submitted!");
+    if (currentHole === 8) {
+      alert("Game Over!");
+      return;
+    } else {
+      saveCurrentHoleData();
+      setCurrentHole((prevHole) => prevHole + 1);
+    }
+  };
+
+  const prevHole = () => {
+    if (currentHole === 0) return;
+    saveCurrentHoleData();
+    setCurrentHole((prevHole) => prevHole - 1);
+  };
+
+  const saveCurrentHoleData = () => {
+    const updatedHoles = [...holes];
+    updatedHoles[currentHole] = { putts, score, shotHistory };
+    setHoles(updatedHoles);
   };
 
   const handleTap = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -123,6 +217,7 @@ const Tracking = () => {
 
     if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
       setScore((prevScore) => prevScore + 1);
+      setTotalScore((prevScore) => prevScore + 1);
       setShotHistory((prevHistory) => [
         ...prevHistory,
         { x: xPercent + "%", y: yPercent + "%" },
@@ -139,8 +234,8 @@ const Tracking = () => {
       }}
     >
       <div className="flex w-full mt-2 justify-evenly absolute top-0">
-        <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
+        <div className="flex flex-col items-center" onClick={prevHole}>
+          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
             HOLE
           </h1>
           <div
@@ -150,12 +245,12 @@ const Tracking = () => {
             }}
           >
             <h1 className="font-archivo font-black text-green-700 text-4xl">
-              #1
+              #{currentHole + 1}
             </h1>
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
+          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
             SCORE
           </h1>
           <div
@@ -170,7 +265,7 @@ const Tracking = () => {
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-medium italic text-green-700 opacity-75">
+          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
             TOTAL
           </h1>
           <div
@@ -180,7 +275,7 @@ const Tracking = () => {
             }}
           >
             <h1 className="font-archivo font-black text-green-700 text-4xl">
-              21
+              {totalScore}
             </h1>
           </div>
         </div>
@@ -190,8 +285,8 @@ const Tracking = () => {
         onClick={handleTap}
         style={{
           position: "relative",
-          backgroundImage: `url(${Hole1})`,
-          backgroundSize: "30%",
+          backgroundImage: `url(${holeImages[currentHole]})`,
+          backgroundSize: "40%",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "bottom",
         }}
@@ -221,7 +316,7 @@ const Tracking = () => {
                 {putts}
               </h1>
             </div>
-            <h1 className="pt-1 font-archivo font-medium italic text-green-700 opacity-75">
+            <h1 className="pt-1 font-archivo font-semibold italic text-green-700 opacity-75">
               PUTTS
             </h1>
           </div>
