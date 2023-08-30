@@ -10,7 +10,7 @@ const Home = () => {
         backgroundSize: "cover",
       }}
     >
-      <div className="flex w-3/4 h-1/4 flex-col justify-between items-center">
+      <div className="flex w-3/4 h-1/3 flex-col justify-between items-center">
         <CustomButton title="New Game" isTitle={true} page="tracking" />
         <CustomButton title="Scores" isTitle={true} page="" />
       </div>

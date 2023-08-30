@@ -19,3 +19,15 @@ body {
     safe-area-inset-left
   ); /* Ensuring content isn't obscured by device's notch or rounded corners */
 }
+
+.line-connector::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  width: 100px; /* fixed width just to see if it shows up */
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
