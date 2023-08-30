@@ -1,7 +1,7 @@
 import ScoreBG from "../assets/ScoreBG.png";
 import Hole1 from "../assets/holes/1.png";
 import CircularButton from "../components/CircularButton";
-import { useState } from "react";
+import React, { useState } from "react";
 import "../App.css";
 // import Hole2 from "../assets/holes/2.png";
 // import Hole3 from "../assets/holes/3.png";
@@ -15,10 +15,7 @@ import "../App.css";
 const Tracking = () => {
   const [putts, setPutts] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
-  const [ballPosition, setBallPosition] = useState({
-    x: "49%",
-    y: "89.5%",
-  });
+  const [aspectRatio, setAspectRatio] = useState<number>(1);
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
   >([{ x: "49%", y: "89.5%" }]);
@@ -35,40 +32,22 @@ const Tracking = () => {
 
   const handleTap = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = e.currentTarget.getBoundingClientRect();
+    console.log("X:", e.clientX - rect.left, "Y:", e.clientY - rect.top);
+
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const xPercent = (x / rect.width) * 100;
     const yPercent = (y / rect.height) * 100;
 
     if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-      const prevShot = shotHistory[shotHistory.length - 1];
-
-      let lineLength: number, angle: number;
-
-      if (prevShot) {
-        const prevXPercent = (parseFloat(prevShot.x) / 100) * rect.width;
-        const prevYPercent = (parseFloat(prevShot.y) / 100) * rect.height;
-        const dx = x - prevXPercent;
-        const dy = y - prevYPercent;
-
-        lineLength = Math.sqrt(dx * dx + dy * dy);
-        angle = Math.atan2(dy, dx) * (180 / Math.PI); // Convert radians to degrees
-
-        // Note: Adjustments for the radius can be done when rendering, or here based on your needs.
-      }
-
-      setBallPosition({ x: xPercent + "%", y: yPercent + "%" });
       setScore((prevScore) => prevScore + 1);
       setShotHistory((prevHistory) => [
         ...prevHistory,
-        {
-          x: xPercent + "%",
-          y: yPercent + "%",
-          length: lineLength ? lineLength + "px" : undefined,
-          angle: angle,
-        },
+        { x: xPercent + "%", y: yPercent + "%" },
       ]);
     }
+    const newAspectRatio = rect.width / rect.height;
+    setAspectRatio(newAspectRatio);
   };
 
   return (
@@ -137,52 +116,55 @@ const Tracking = () => {
           backgroundPosition: "center",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: ballPosition.y,
-            left: ballPosition.x,
-            width: "20px",
-            height: "20px",
-            borderRadius: "50%",
-            backgroundColor: "white",
-            transform: "translate(-50%, -50%)",
-            zIndex: 2,
-          }}
-        ></div>
-        {shotHistory.map((shot, index) => (
-          <div
-            key={index}
-            style={
-              {
-                position: "absolute",
-                top: shot.y,
-                left: shot.x,
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "black",
-                transform: "translate(-50%, -50%)",
-                zIndex: 1,
-              } as never
-            }
-          >
-            {index !== 0 && shot.length && shot.angle !== undefined && (
+        {shotHistory.map((shot, index) => {
+          if (index !== 0) {
+            const prevShot = shotHistory[index - 1];
+            const dx = parseFloat(shot.x) - parseFloat(prevShot.x);
+            const dy = parseFloat(shot.y) - parseFloat(prevShot.y);
+            const correctedDx = dx * aspectRatio; // Apply aspectRatio to dx
+            const lineLength =
+              Math.sqrt(correctedDx * correctedDx + dy * dy) +
+              Math.abs(correctedDx) * 0.5 +
+              Math.abs(dy) * 0.4;
+
+            const angle = Math.atan2(dy, correctedDx) * (180 / Math.PI);
+
+            return (
               <div
+                key={"line-" + index}
                 style={{
                   position: "absolute",
+                  top: `calc(${prevShot.y} + 0px)`, // Adjust starting point
+                  left: `calc(${prevShot.x} + 0px)`, // Adjust starting point
                   backgroundColor: "black",
-                  width: shot.length,
-                  opacity: 0.7,
-                  height: "6px",
-                  top: "50%",
-                  left: "50%",
-                  transform: `translate(-50%, -50%) rotate(${shot.angle}deg)`,
+                  width: `${lineLength}%`,
+                  height: "2px",
+                  transformOrigin: "left center",
+                  transform: `rotate(${angle}deg)`,
                   zIndex: 0,
                 }}
               ></div>
-            )}
-          </div>
+            );
+          }
+          return null;
+        })}
+
+        {shotHistory.map((shot, index) => (
+          <div
+            key={"ball-" + index}
+            style={{
+              position: "absolute",
+              top: shot.y,
+              left: shot.x,
+              width: index === shotHistory.length - 1 ? "20px" : "15px",
+              height: index === shotHistory.length - 1 ? "20px" : "15px",
+              borderRadius: "50%",
+              backgroundColor:
+                index === shotHistory.length - 1 ? "white" : "black",
+              transform: "translate(-50%, -50%)",
+              zIndex: 1,
+            }}
+          ></div>
         ))}
       </div>
       <div className="flex w-full h-1/4 mb-8 justify-between items-end px-4 border absolute bottom-0">
