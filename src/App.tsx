@@ -2,6 +2,7 @@ import "./App.css";
 import Home from "./routes/Home";
 import Scorecard from "./routes/Scorecard";
 import Players from "./routes/Players";
+import MultipleTracking from "./routes/MultipleTracking";
 import { Routes, Route } from "react-router-dom";
 import Tracking from "./routes/Tracking";
 import { useRef, useState, useEffect } from "react";
@@ -45,6 +46,7 @@ function App() {
         <Route path="/players" element={<Players />} />
         <Route path="/tracking" element={<Tracking />} />
         <Route path="/scorecard" element={<Scorecard />} />
+        <Route path="/multipleTracking" element={<MultipleTracking />} />
       </Routes>
     </div>
   );

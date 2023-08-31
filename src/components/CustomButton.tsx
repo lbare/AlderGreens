@@ -4,6 +4,8 @@ interface CustomButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   isTitle: boolean;
   page?: string;
   isClicked?: boolean;
+  classNameText?: string;
+  hidden?: boolean;
 }
 
 const CustomButton = (props: CustomButtonProps) => {
@@ -15,11 +17,16 @@ const CustomButton = (props: CustomButtonProps) => {
 
   if (props.isTitle)
     return (
-      <div className="w-full items-center justify-center">
+      <div
+        className={`w-full items-center justify-center ${props.classNameText} ${
+          props.hidden && "opacity-0"
+        }`}
+      >
         <button
           className={`py-4 w-full bg-white border-4 border-green-700 rounded-xl`}
           style={{
             boxShadow: "7px 7px #2d603a",
+            WebkitTapHighlightColor: `${props.hidden && "transparent"}`,
           }}
           onClick={props.page ? onClickLink : props.onClick}
         >
