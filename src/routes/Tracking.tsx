@@ -79,7 +79,7 @@ const Tracking = () => {
     svg
       .append("path")
       .attr("d", lineGenerator(shotHistory) as never) // cast to any due to d3 type nuances
-      .attr("stroke", "black")
+      .attr("stroke", "#131617")
       .attr("fill", "none")
       .attr("stroke-width", 6);
 
@@ -103,7 +103,7 @@ const Tracking = () => {
         (
           _d: { x: string; y: string; length?: string; angle?: number },
           i: number
-        ) => (i === shotHistory.length - 1 ? "white" : "black")
+        ) => (i === shotHistory.length - 1 ? "white" : "#131617")
       );
 
     const defs = svg.append("defs");
@@ -118,7 +118,7 @@ const Tracking = () => {
 
     filter
       .append("feFlood")
-      .attr("flood-color", "black")
+      .attr("flood-color", "#131617")
       .attr("result", "floodOutput");
 
     filter
@@ -159,7 +159,7 @@ const Tracking = () => {
       .attr("text-anchor", "middle")
       .attr("font-family", "Archivo")
       .attr("font-weight", "900")
-      .attr("stroke", "black")
+      .attr("stroke", "#131617")
       .attr("stroke-width", "6px")
       .attr("paint-order", "stroke fill")
       .attr("filter", "url(#dropshadow)");
