@@ -18,7 +18,7 @@ export default {
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],
-        archivo: ["Archivo Black", "sans-serif"],
+        archivo: ["Archivo", "sans-serif"],
       },
     },
   },
