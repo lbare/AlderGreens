@@ -33,7 +33,7 @@ const Tracking = () => {
   const svgRef = useRef(null);
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "34.5%", y: "90.5%" }]);
+  >([{ x: "50.5%", y: "85.4%" }]);
   const [currentHole, setCurrentHole] = useState<number>(0);
   const [holes, setHoles] = useState<
     Array<{
@@ -52,7 +52,7 @@ const Tracking = () => {
     if (!holes[currentHole]) {
       setHoles((prev) => [
         ...prev,
-        { putts: 0, score: 0, shotHistory: [{ x: "34.5%", y: "90.5%" }] },
+        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "85.4%" }] },
       ]);
     }
     setPutts(holes[currentHole]?.putts || 0);
@@ -238,12 +238,29 @@ const Tracking = () => {
       }}
     >
       <div className="flex w-full mt-2 justify-evenly absolute top-0">
-        <div className="flex flex-col items-center" onClick={prevHole}>
-          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
-            HOLE
-          </h1>
+        <div className="flex flex-col mt-3 items-center" onClick={prevHole}>
+          <div className="flex items-center justify-center relative">
+            <h1
+              className="font-bold italic font-archivo absolute z-10"
+              style={{
+                color: "white",
+              }}
+            >
+              HOLE
+            </h1>
+            <h1
+              className="font-bold italic font-archivo absolute"
+              style={{
+                color: "#2d603a",
+                WebkitTextStroke: "5px #2d603a",
+                textShadow: "1.5px 1.5px 0px #2d603a",
+              }}
+            >
+              HOLE
+            </h1>
+          </div>
           <div
-            className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+            className="mt-3 py-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
@@ -253,12 +270,29 @@ const Tracking = () => {
             </h1>
           </div>
         </div>
-        <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
-            SCORE
-          </h1>
+        <div className="flex flex-col items-center mt-3">
+          <div className="flex items-center justify-center relative">
+            <h1
+              className="font-bold italic font-archivo absolute z-10"
+              style={{
+                color: "white",
+              }}
+            >
+              SCORE
+            </h1>
+            <h1
+              className="font-bold italic font-archivo absolute"
+              style={{
+                color: "#2d603a",
+                WebkitTextStroke: "5px #2d603a",
+                textShadow: "1.5px 1.5px 0px #2d603a",
+              }}
+            >
+              SCORE
+            </h1>
+          </div>
           <div
-            className="px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+            className="px-4 mt-3 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
@@ -269,11 +303,28 @@ const Tracking = () => {
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <h1 className="font-archivo font-semibold italic text-green-700 opacity-75">
-            TOTAL
-          </h1>
+          <div className="flex mt-3 items-center justify-center relative">
+            <h1
+              className="font-bold italic font-archivo absolute z-10"
+              style={{
+                color: "white",
+              }}
+            >
+              TOTAL
+            </h1>
+            <h1
+              className="font-bold italic font-archivo absolute"
+              style={{
+                color: "#2d603a",
+                WebkitTextStroke: "5px #2d603a",
+                textShadow: "1.5px 1.5px 0px #2d603a",
+              }}
+            >
+              TOTAL
+            </h1>
+          </div>
           <div
-            className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+            className="py-2 mt-3 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
@@ -285,14 +336,14 @@ const Tracking = () => {
         </div>
       </div>
       <div
-        className="flex w-2/3 h-96 mt-8 mr-4 justify-between items-center self-end"
+        className="flex w-2/3 h-96 mt-8 justify-between items-center self-center border border-cyan-300"
         onClick={handleTap}
         style={{
           position: "relative",
           backgroundImage: `url(${holeImages[currentHole]})`,
           backgroundSize: "60%",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "left 10% bottom",
+          backgroundPosition: "center",
         }}
       >
         <svg
@@ -306,34 +357,50 @@ const Tracking = () => {
           }}
         ></svg>
       </div>
-      <div className="flex w-full h-1/6 mb-8 justify-between items-end px-4 absolute bottom-0 overflow-visible">
-        <div className="grid grid-cols-3 h-16 gap-6 w-4/6">
-          <CircularButton icon="minus" onClick={decrementPutts} />
-          <div className="flex flex-col items-center">
-            <div
-              className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+      <div className="flex flex-col h-1/3 gap-6 w-1/6 left-4 absolute">
+        <CircularButton icon="plus" onClick={incrementPutts} />
+        <div className="flex flex-col items-center mt-3">
+          <div className="flex items-center justify-center relative">
+            <h1
+              className="font-bold italic font-archivo absolute z-10 mb-6"
               style={{
-                boxShadow: "5px 5px #2d603a",
+                color: "white",
               }}
             >
-              <h1 className="font-archivo font-black text-green-700 text-4xl">
-                {putts}
-              </h1>
-            </div>
-            <h1 className="pt-1 font-archivo font-semibold italic text-green-700 opacity-75">
+              PUTTS
+            </h1>
+            <h1
+              className="font-bold italic font-archivo absolute mb-6"
+              style={{
+                color: "#2d603a",
+                WebkitTextStroke: "5px #2d603a",
+                textShadow: "1.5px 1.5px 0px #2d603a",
+              }}
+            >
               PUTTS
             </h1>
           </div>
-          <CircularButton icon="plus" onClick={incrementPutts} />
+          <div
+            className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+            style={{
+              boxShadow: "5px 5px #2d603a",
+            }}
+          >
+            <h1 className="font-archivo font-black text-green-700 text-4xl">
+              {putts}
+            </h1>
+          </div>
         </div>
-        <div className="grid grid-rows-2 grid-cols-1 h-36 items-end">
-          {shotHistory.length > 1 ? (
-            <CircularButton icon="undo" onClick={undoShot} />
-          ) : (
-            <div className="h-16 w-16"></div>
-          )}
-          <CircularButton icon="check" onClick={submitScore} />
-        </div>
+
+        <CircularButton icon="minus" onClick={decrementPutts} />
+      </div>
+      <div className="grid grid-rows-2 grid-cols-1 h-48 items-center absolute right-4">
+        {shotHistory.length > 1 ? (
+          <CircularButton icon="undo" onClick={undoShot} />
+        ) : (
+          <div className="h-16 w-16"></div>
+        )}
+        <CircularButton icon="check" onClick={submitScore} />
       </div>
     </div>
   );
