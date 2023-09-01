@@ -3,8 +3,8 @@ import Home from "./routes/Home";
 import Scorecard from "./routes/Scorecard";
 import SelectPlayers from "./routes/SelectPlayers";
 import MultipleTracking from "./routes/MultipleTracking";
+import Game from "./routes/Game";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Tracking from "./routes/Tracking";
 import { useRef, useState, useEffect } from "react";
 import { Player, ScoreContext } from "./contexts/ScoreContext";
 
@@ -58,9 +58,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/selectPlayers" element={<SelectPlayers />} />
-          <Route path="/tracking" element={<Tracking />} />
           <Route path="/scorecard" element={<Scorecard />} />
           <Route path="/multipleTracking" element={<MultipleTracking />} />
+          <Route path="/tracking" element={<Game />} />
         </Routes>
       </div>
     </ScoreContext.Provider>

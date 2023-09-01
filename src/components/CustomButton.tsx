@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { Plus } from "@phosphor-icons/react";
+import {
+  Plus,
+  PencilSimpleLine,
+  PencilSimple,
+  MapPin,
+  MapPinLine,
+} from "@phosphor-icons/react";
 
 interface CustomButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   isTitle: boolean;
   page?: string;
   isClicked?: boolean;
   classNameText?: string;
+  classNameButton?: string;
   classNameFont?: string;
   hidden?: boolean;
   icon?: string;
@@ -27,7 +34,7 @@ const CustomButton = (props: CustomButtonProps) => {
         }`}
       >
         <button
-          className={`py-4 w-full bg-white border-4 border-green-700 rounded-xl`}
+          className={`py-4 w-full bg-white border-4 border-green-700 rounded-xl ${props.classNameButton}`}
           style={{
             boxShadow: "7px 7px #2d603a",
             WebkitTapHighlightColor: `${props.hidden && "transparent"}`,
@@ -48,34 +55,30 @@ const CustomButton = (props: CustomButtonProps) => {
   } else if (props.icon) {
     return (
       <div className={`items-center justify-center p-4 ${props.classNameText}`}>
-        {props.isClicked ? (
-          <button
-            className={`py-2 px-6 bg-green-700 border-4 border-green-700 rounded-full`}
-            onClick={() => {
-              if (props.onClick) props.onClick();
-              if (props.page) onClickLink();
-            }}
-          >
-            <h1
-              className={`text-2xl font-archivo font-bold text-white ${props.classNameFont}`}
-            >
-              {props.title}
-            </h1>
-          </button>
-        ) : (
-          <button
-            className={`py-2 px-6 bg-white border-4 border-green-700 rounded-full ${props.classNameText}`}
-            style={{
-              boxShadow: "5px 5px #2d603a",
-            }}
-            onClick={() => {
-              if (props.onClick) props.onClick();
-              if (props.page) onClickLink();
-            }}
-          >
+        <button
+          className={`py-2 px-6 bg-white border-4 border-green-700 rounded-full ${props.classNameButton}`}
+          style={{
+            boxShadow: "5px 5px #2d603a",
+          }}
+          onClick={() => {
+            if (props.onClick) props.onClick();
+            if (props.page) onClickLink();
+          }}
+        >
+          {props.icon === "plus" ? (
             <Plus size={28} color="#2d603a" weight="bold" />
-          </button>
-        )}
+          ) : props.icon === "scorecard" ? (
+            props.isClicked ? (
+              <PencilSimpleLine size={32} color="#2d603a" weight="fill" />
+            ) : (
+              <PencilSimple size={32} color="#2d603a" weight="bold" />
+            )
+          ) : props.isClicked ? (
+            <MapPinLine size={32} color="#2d603a" weight="fill" />
+          ) : (
+            <MapPin size={32} color="#2d603a" weight="bold" />
+          )}
+        </button>
       </div>
     );
   } else {
@@ -85,7 +88,7 @@ const CustomButton = (props: CustomButtonProps) => {
       >
         {props.isClicked ? (
           <button
-            className={`py-2 px-6 bg-green-700 border-4 border-green-700 rounded-full`}
+            className={`py-2 px-6 bg-green-700 border-4 border-green-700 rounded-full ${props.classNameButton}`}
             onClick={() => {
               if (props.onClick) props.onClick();
               if (props.page) onClickLink();
@@ -99,7 +102,7 @@ const CustomButton = (props: CustomButtonProps) => {
           </button>
         ) : (
           <button
-            className={`py-2 px-6 bg-white border-4 border-green-700 rounded-full ${props.classNameText}`}
+            className={`py-2 px-6 bg-white border-4 border-green-700 rounded-full ${props.classNameButton}`}
             style={{
               boxShadow: "5px 5px #2d603a",
             }}

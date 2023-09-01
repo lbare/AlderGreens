@@ -33,7 +33,7 @@ const Tracking = () => {
   const svgRef = useRef(null);
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "50.5%", y: "90.5%" }]);
+  >([{ x: "34.5%", y: "90.5%" }]);
   const [currentHole, setCurrentHole] = useState<number>(0);
   const [holes, setHoles] = useState<
     Array<{
@@ -52,7 +52,7 @@ const Tracking = () => {
     if (!holes[currentHole]) {
       setHoles((prev) => [
         ...prev,
-        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "90.5%" }] },
+        { putts: 0, score: 0, shotHistory: [{ x: "34.5%", y: "90.5%" }] },
       ]);
     }
     setPutts(holes[currentHole]?.putts || 0);
@@ -285,14 +285,14 @@ const Tracking = () => {
         </div>
       </div>
       <div
-        className="flex w-full h-96 mt-8 justify-between items-center"
+        className="flex w-2/3 h-96 mt-8 mr-4 justify-between items-center self-end"
         onClick={handleTap}
         style={{
           position: "relative",
           backgroundImage: `url(${holeImages[currentHole]})`,
-          backgroundSize: "40%",
+          backgroundSize: "60%",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "bottom",
+          backgroundPosition: "left 10% bottom",
         }}
       >
         <svg
@@ -328,7 +328,7 @@ const Tracking = () => {
         </div>
         <div className="grid grid-rows-2 grid-cols-1 h-36 items-end">
           {shotHistory.length > 1 ? (
-            <CircularButton icon="arrow" onClick={undoShot} />
+            <CircularButton icon="undo" onClick={undoShot} />
           ) : (
             <div className="h-16 w-16"></div>
           )}
