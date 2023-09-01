@@ -33,7 +33,7 @@ const Tracking = () => {
   const svgRef = useRef(null);
   const [shotHistory, setShotHistory] = useState<
     Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "50.5%", y: "85.4%" }]);
+  >([{ x: "50.5%", y: "90.8%" }]);
   const [currentHole, setCurrentHole] = useState<number>(0);
   const [holes, setHoles] = useState<
     Array<{
@@ -52,7 +52,7 @@ const Tracking = () => {
     if (!holes[currentHole]) {
       setHoles((prev) => [
         ...prev,
-        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "85.4%" }] },
+        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "90.8%" }] },
       ]);
     }
     setPutts(holes[currentHole]?.putts || 0);
@@ -97,8 +97,7 @@ const Tracking = () => {
         (
           _d: { x: string; y: string; length?: string; angle?: number },
           i: number
-        ) =>
-          shotHistory.length === 1 || i !== shotHistory.length - 1 ? 7.5 : 10
+        ) => (i !== shotHistory.length - 1 ? 7.5 : 10)
       ) // adjust radius based on the shot order
       .attr(
         "fill",
@@ -336,14 +335,14 @@ const Tracking = () => {
         </div>
       </div>
       <div
-        className="flex w-2/3 h-96 mt-8 justify-between items-center self-center border border-cyan-300"
+        className="flex w-2/3 h-2/3 mt-10 justify-between items-center self-center"
         onClick={handleTap}
         style={{
           position: "relative",
           backgroundImage: `url(${holeImages[currentHole]})`,
-          backgroundSize: "60%",
+          backgroundSize: "65%",
           backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
+          backgroundPosition: "center bottom",
         }}
       >
         <svg
