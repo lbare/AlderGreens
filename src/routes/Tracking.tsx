@@ -1,7 +1,6 @@
 import ScoreBG from "../assets/ScoreBG.png";
 import CircularButton from "../components/CircularButton";
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { ScoreContext } from "../contexts/ScoreContext";
+import React, { useState, useRef, useEffect } from "react";
 import "../App.css";
 import * as d3 from "d3";
 import Hole1 from "../assets/holes/1.png";
@@ -15,7 +14,6 @@ import Hole8 from "../assets/holes/8.png";
 import Hole9 from "../assets/holes/9.png";
 
 const Tracking = () => {
-  const { players } = useContext(ScoreContext);
   const holeImages = [
     Hole1,
     Hole2,
@@ -165,8 +163,6 @@ const Tracking = () => {
       .attr("paint-order", "stroke fill")
       .attr("filter", "url(#dropshadow)");
   }, [shotHistory]);
-
-  useEffect(() => console.log(players));
 
   const incrementPutts = () => {
     setPutts((prevPutts) => prevPutts + 1);
