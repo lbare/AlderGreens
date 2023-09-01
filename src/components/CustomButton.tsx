@@ -9,6 +9,7 @@ interface CustomButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   classNameFont?: string;
   hidden?: boolean;
   icon?: string;
+  onClick?: () => void;
 }
 
 const CustomButton = (props: CustomButtonProps) => {
@@ -31,7 +32,10 @@ const CustomButton = (props: CustomButtonProps) => {
             boxShadow: "7px 7px #2d603a",
             WebkitTapHighlightColor: `${props.hidden && "transparent"}`,
           }}
-          onClick={props.page ? onClickLink : props.onClick}
+          onClick={() => {
+            if (props.onClick) props.onClick();
+            if (props.page) onClickLink();
+          }}
         >
           <h1
             className={`text-3xl font-archivo font-black italic text-green-700 ${props.classNameFont}`}
@@ -47,7 +51,10 @@ const CustomButton = (props: CustomButtonProps) => {
         {props.isClicked ? (
           <button
             className={`py-2 px-6 bg-green-700 border-4 border-green-700 rounded-full`}
-            onClick={props.page ? onClickLink : props.onClick}
+            onClick={() => {
+              if (props.onClick) props.onClick();
+              if (props.page) onClickLink();
+            }}
           >
             <h1
               className={`text-2xl font-archivo font-bold text-white ${props.classNameFont}`}
@@ -61,7 +68,10 @@ const CustomButton = (props: CustomButtonProps) => {
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
-            onClick={props.page ? onClickLink : props.onClick}
+            onClick={() => {
+              if (props.onClick) props.onClick();
+              if (props.page) onClickLink();
+            }}
           >
             <Plus size={28} color="#2d603a" weight="bold" />
           </button>
@@ -76,7 +86,10 @@ const CustomButton = (props: CustomButtonProps) => {
         {props.isClicked ? (
           <button
             className={`py-2 px-6 bg-green-700 border-4 border-green-700 rounded-full`}
-            onClick={props.page ? onClickLink : props.onClick}
+            onClick={() => {
+              if (props.onClick) props.onClick();
+              if (props.page) onClickLink();
+            }}
           >
             <h1
               className={`text-2xl font-archivo font-bold text-white ${props.classNameFont}`}
@@ -90,7 +103,10 @@ const CustomButton = (props: CustomButtonProps) => {
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
-            onClick={props.page ? onClickLink : props.onClick}
+            onClick={() => {
+              if (props.onClick) props.onClick();
+              if (props.page) onClickLink();
+            }}
           >
             <h1
               className={`text-2xl font-archivo font-bold text-green-700 ${props.classNameFont}`}

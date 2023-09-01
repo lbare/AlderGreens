@@ -36,8 +36,6 @@ const SelectPlayers = () => {
         return prevSelected.filter((player) => player.name !== playerName);
       }
     });
-
-    console.log(players);
   };
 
   const addName = () => {

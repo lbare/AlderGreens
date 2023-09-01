@@ -1,9 +1,12 @@
 import CustomButton from "../components/CustomButton";
 import HomeBG from "../assets/HomeBG.png";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ScoreContext } from "../contexts/ScoreContext";
 
 const Home = () => {
+  const { setPlayers } = useContext(ScoreContext);
   const [isClicked, setIsClicked] = useState(false);
+  const wasOnTrackingPage = localStorage.getItem("lastRoute") === "/tracking";
 
   return (
     <div
@@ -34,9 +37,24 @@ const Home = () => {
           classNameText="absolute w-1/4 top-0 right-0"
         />
       )}
-
-      <div className="flex w-3/4 h-1/3 flex-col justify-between items-center">
-        <CustomButton title="New Game" isTitle={true} page="selectPlayers" />
+      <div
+        className={`flex w-3/4 flex-col justify-between items-center ${
+          wasOnTrackingPage ? "h-1/2" : "h-1/3"
+        }`}
+      >
+        <CustomButton
+          title="New Game"
+          isTitle={true}
+          page="selectPlayers"
+          onClick={() => {
+            localStorage.removeItem("lastRoute");
+            localStorage.removeItem("players");
+            setPlayers([]);
+          }}
+        />
+        {wasOnTrackingPage && (
+          <CustomButton title="Resume Game" isTitle={true} page="tracking" />
+        )}
         <CustomButton title="Scores" isTitle={true} page="" />
       </div>
     </div>
