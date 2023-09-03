@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import CustomButton from "../components/CustomButton";
+import { Player, ScoreContext } from "../contexts/ScoreContext";
 
 const Scorecard = () => {
-  const names = ["Blaine", "Spencer", "Chris", "Levi"];
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCell, setSelectedCell] = useState(0);
-  const [scores, setScores] = useState(Array(names.length * 9).fill(null));
+  const { players, setPlayers } = useContext(ScoreContext);
+
+  const findDuplicates = (players: Player[]): string[] => {
+    const letters = players.map((player) => player.name[0]);
+    return letters.filter((letter, index) => letters.indexOf(letter) !== index);
+  };
+
+  const duplicatedStartingLetters: string[] = findDuplicates(players);
 
   return (
     <div className="flex w-full h-full justify-center">
@@ -25,24 +31,38 @@ const Scorecard = () => {
           >
             <div className="flex w-full flex-col justify-center items-center">
               <h1 className="font-archivo font-black text-3xl text-green-700">
-                {names[selectedCell % 4]} - Hole #{(selectedCell % 9) + 1}
+                {players[selectedCell % players.length].name} - Hole #
+                {Math.floor(selectedCell / players.length) + 1}
               </h1>
             </div>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((score) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((score, i) => (
               <CustomButton
                 className="flex bg-green-700 text-white rounded"
                 onClick={() => {
-                  const newScores = [...scores];
-                  newScores[selectedCell] = score;
-                  setScores(newScores);
+                  setPlayers((prevPlayers) => {
+                    const updatedPlayers = [...prevPlayers];
+                    const playerIndex = selectedCell % players.length;
+                    console.log("playerIndex", playerIndex);
+                    console.log("selectedCell % 9", selectedCell % 9);
+
+                    updatedPlayers[playerIndex].scores[
+                      Math.floor(selectedCell / players.length)
+                    ] = score;
+                    console.log(updatedPlayers[playerIndex].scores);
+
+                    return updatedPlayers;
+                  });
                   setShowPopup(false);
+                  console.log(players);
                 }}
                 isClicked={
-                  scores[selectedCell] === score &&
-                  scores[selectedCell] !== null
+                  players[selectedCell % players.length].scores[
+                    Math.floor(selectedCell / players.length)
+                  ] === score
                 }
                 isTitle={false}
                 title={score.toString()}
+                key={i}
               />
             ))}
           </div>
@@ -73,32 +93,35 @@ const Scorecard = () => {
             className="flex flex-row justify-center items-center mr-3"
             style={{ width: "90vw" }}
           >
-            {names.map((name) => (
+            {players.map((player, i) => (
               <div
                 className="flex justify-center items-center"
                 style={{ width: "24%" }}
+                key={i}
               >
                 <h1 className="text-white font-archivo text-3xl italic font-black">
-                  {name[0]}
+                  {duplicatedStartingLetters.includes(player.name[0])
+                    ? player.name.slice(0, 2)
+                    : player.name[0]}
                 </h1>
               </div>
             ))}
           </div>
           <div
-            className={`grid grid-cols-${names.length} grid-rows-10 mb-5 mr-3 rounded-2xl bg-white`}
+            className={`grid grid-cols-${players.length} grid-rows-10 mb-5 mr-3 rounded-2xl bg-white`}
             style={{ height: "70vh", width: "85vw" }}
           >
-            {[...Array(names.length * 9)].map((_, i) => (
+            {[...Array(players.length * 9)].map((_, i) => (
               <div
                 key={i}
                 className={`${
                   i === 0
                     ? "rounded-tl-2xl"
-                    : i === names.length - 1
+                    : i === players.length - 1
                     ? "rounded-tr-2xl"
-                    : i === names.length * 9 - 1
+                    : i === players.length * 9 - 1
                     ? "rounded-br-2xl"
-                    : i === names.length * 9 - names.length
+                    : i === players.length * 9 - players.length
                     ? "rounded-bl-2xl"
                     : ""
                 } flex border-y border-green-200 border-opacity-50 justify-center items-center ${
@@ -113,7 +136,9 @@ const Scorecard = () => {
                 }}
               >
                 <h1 className="font-black font-archivo text-4xl text-green-700">
-                  {scores[i] || ""}
+                  {players[i % players.length].scores[
+                    Math.floor(i / players.length)
+                  ] || ""}
                 </h1>
               </div>
             ))}
