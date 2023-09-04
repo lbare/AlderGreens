@@ -26,9 +26,13 @@ const SelectPlayers = () => {
         return {
           ...player,
           scores: [],
+          currentHole: 0,
           holes: Array(9)
             .fill(null)
-            .map(() => ({ score: 0 })),
+            .map(() => ({
+              score: 0,
+              shotHistory: [{ x: "50.5%", y: "90.8%" }],
+            })),
         };
       });
     });
@@ -47,7 +51,10 @@ const SelectPlayers = () => {
             name: playerName,
             holes: Array(9)
               .fill(null)
-              .map(() => ({ score: 0 })),
+              .map(() => ({
+                score: 0,
+                shotHistory: [{ x: "50.5%", y: "90.8%" }],
+              })),
             currentHole: 0,
           },
         ];
