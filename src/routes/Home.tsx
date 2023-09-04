@@ -6,7 +6,9 @@ import { ScoreContext } from "../contexts/ScoreContext";
 const Home = () => {
   const { setPlayers } = useContext(ScoreContext);
   const [isClicked, setIsClicked] = useState(false);
-  const wasOnTrackingPage = localStorage.getItem("lastRoute") === "/tracking";
+  const wasOnTrackingPage =
+    localStorage.getItem("lastRoute") === "/tracking" ||
+    localStorage.getItem("lastRoute") === "/selectPlayers";
 
   return (
     <div
@@ -49,6 +51,7 @@ const Home = () => {
           onClick={() => {
             localStorage.removeItem("lastRoute");
             localStorage.removeItem("players");
+            localStorage.removeItem("currentHole");
             setPlayers([]);
           }}
         />
