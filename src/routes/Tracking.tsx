@@ -1,7 +1,9 @@
 import ScoreBG from "../assets/ScoreBG.png";
 import CircularButton from "../components/CircularButton";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
+import { ScoreContext } from "../contexts/ScoreContext";
 import "../App.css";
+import { Hole } from "../contexts/ScoreContext";
 import * as d3 from "d3";
 import Hole1 from "../assets/holes/1.png";
 import Hole2 from "../assets/holes/2.png";
@@ -25,41 +27,59 @@ const Tracking = () => {
     Hole8,
     Hole9,
   ];
-  const [putts, setPutts] = useState<number>(0);
-  const [score, setScore] = useState<number>(0);
-  const [totalScore, setTotalScore] = useState<number>(0);
+  const { players, setPlayers } = useContext(ScoreContext);
   const svgRef = useRef(null);
-  const [shotHistory, setShotHistory] = useState<
-    Array<{ x: string; y: string; length?: string; angle?: number }>
-  >([{ x: "50.5%", y: "90.8%" }]);
-  const [currentHole, setCurrentHole] = useState<number>(0);
-  const [holes, setHoles] = useState<
-    Array<{
-      putts: number;
-      score: number;
-      shotHistory: Array<{
-        x: string;
-        y: string;
-        length?: string;
-        angle?: number;
-      }>;
-    }>
-  >([]);
+  const [currentHole, setCurrentHole] = useState<number>(
+    Number(localStorage.getItem("currentHole")) || 0
+  );
+
+  const getCurrentHoleData = (): Hole => {
+    return (
+      players[0]?.holes[currentHole] || {
+        score: 0,
+        shotHistory: [{ x: "50.5%", y: "90.8%" }],
+      }
+    );
+  };
+
+  const setCurrentHoleData = (data: Hole) => {
+    const updatedPlayers = [...players];
+    updatedPlayers[0].holes[currentHole] = data;
+    setPlayers(updatedPlayers);
+  };
 
   useEffect(() => {
-    if (!holes[currentHole]) {
-      setHoles((prev) => [
-        ...prev,
-        { putts: 0, score: 0, shotHistory: [{ x: "50.5%", y: "90.8%" }] },
-      ]);
+    const holeData = getCurrentHoleData();
+      localStorage.setItem("currentHole", currentHole.toString());
+
+    if (holeData && holeData.putts) {
+      // If data already exists for the hole, just return
+      return;
     }
-    setPutts(holes[currentHole]?.putts || 0);
-    setScore(holes[currentHole]?.score || 0);
-    setShotHistory(holes[currentHole]?.shotHistory || []);
-  }, [currentHole, holes]);
+
+    setCurrentHoleData({
+      ...holeData,
+      putts: 0,
+      score: 0,
+      shotHistory: [
+        {
+          x: "50.5%",
+          y: "90.8%",
+        },
+      ],
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentHole]);
+
+  const currentHoleData = getCurrentHoleData();
 
   useEffect(() => {
-    if (shotHistory.length < 1) return;
+    if (
+      !currentHoleData ||
+      !currentHoleData.shotHistory ||
+      currentHoleData.shotHistory.length < 1
+    )
+      return;
 
     const svg = d3.select(svgRef.current);
     if (!svg.node()) return; // check if the node exists to make TypeScript happy
@@ -78,14 +98,14 @@ const Tracking = () => {
 
     svg
       .append("path")
-      .attr("d", lineGenerator(shotHistory) as never) // cast to any due to d3 type nuances
+      .attr("d", lineGenerator(currentHoleData.shotHistory) as never) // cast to any due to d3 type nuances
       .attr("stroke", "#131617")
       .attr("fill", "none")
       .attr("stroke-width", 6);
 
     svg
       .selectAll("circle")
-      .data(shotHistory)
+      .data(currentHoleData.shotHistory)
       .enter()
       .append("circle")
       .attr("cx", (d: { x: string }) => (parseFloat(d.x) / 100) * svgWidth)
@@ -95,14 +115,22 @@ const Tracking = () => {
         (
           _d: { x: string; y: string; length?: string; angle?: number },
           i: number
-        ) => (i !== shotHistory.length - 1 ? 7.5 : 10)
+        ) =>
+          currentHoleData.shotHistory &&
+          i !== currentHoleData.shotHistory.length - 1
+            ? 7.5
+            : 10
       ) // adjust radius based on the shot order
       .attr(
         "fill",
         (
           _d: { x: string; y: string; length?: string; angle?: number },
           i: number
-        ) => (i === shotHistory.length - 1 ? "white" : "#131617")
+        ) =>
+          currentHoleData.shotHistory &&
+          i === currentHoleData.shotHistory.length - 1
+            ? "white"
+            : "#131617"
       );
 
     const defs = svg.append("defs");
@@ -139,7 +167,7 @@ const Tracking = () => {
 
     svg
       .selectAll("text")
-      .data(shotHistory)
+      .data(currentHoleData.shotHistory)
       .enter()
       .append("text")
       .attr("x", (d: { x: string }) => (parseFloat(d.x) / 100) * svgWidth)
@@ -162,25 +190,47 @@ const Tracking = () => {
       .attr("stroke-width", "6px")
       .attr("paint-order", "stroke fill")
       .attr("filter", "url(#dropshadow)");
-  }, [shotHistory]);
+  }, [currentHoleData]);
 
   const incrementPutts = () => {
-    setPutts((prevPutts) => prevPutts + 1);
-    setScore((prevScore) => prevScore + 1);
-    setTotalScore((prevScore) => prevScore + 1);
+    const currentData = getCurrentHoleData();
+    if (currentData.putts) {
+      setCurrentHoleData({
+        ...currentData,
+        putts: currentData.putts + 1,
+        score: currentData.score + 1,
+      });
+    } else {
+      setCurrentHoleData({
+        ...currentData,
+        putts: 1,
+        score: currentData.score + 1,
+      });
+    }
   };
 
   const decrementPutts = () => {
-    if (putts === 0) return;
-    setPutts((prevPutts) => prevPutts - 1);
-    setScore((prevScore) => prevScore - 1);
-    setTotalScore((prevScore) => prevScore - 1);
+    const currentData = getCurrentHoleData();
+    if (currentData.putts) {
+      if (currentData.putts === 0) return;
+      setCurrentHoleData({
+        ...currentData,
+        putts: currentData.putts - 1,
+        score: currentData.score - 1,
+      });
+    }
   };
 
   const undoShot = () => {
-    setShotHistory((prevHistory) => prevHistory.slice(0, -1));
-    setScore((prevScore) => prevScore - 1);
-    setTotalScore((prevScore) => prevScore - 1);
+    const currentData = getCurrentHoleData();
+    if (currentData.shotHistory) {
+      const newShotHistory = currentData.shotHistory.slice(0, -1);
+      setCurrentHoleData({
+        ...currentData,
+        shotHistory: newShotHistory,
+        score: currentData.score - 1,
+      });
+    }
   };
 
   const submitScore = () => {
@@ -188,21 +238,13 @@ const Tracking = () => {
       alert("Game Over!");
       return;
     } else {
-      saveCurrentHoleData();
       setCurrentHole((prevHole) => prevHole + 1);
     }
   };
 
   const prevHole = () => {
     if (currentHole === 0) return;
-    saveCurrentHoleData();
     setCurrentHole((prevHole) => prevHole - 1);
-  };
-
-  const saveCurrentHoleData = () => {
-    const updatedHoles = [...holes];
-    updatedHoles[currentHole] = { putts, score, shotHistory };
-    setHoles(updatedHoles);
   };
 
   const handleTap = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -215,12 +257,19 @@ const Tracking = () => {
     const yPercent = (y / rect.height) * 100;
 
     if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
-      setScore((prevScore) => prevScore + 1);
-      setTotalScore((prevScore) => prevScore + 1);
-      setShotHistory((prevHistory) => [
-        ...prevHistory,
-        { x: xPercent + "%", y: yPercent + "%" },
-      ]);
+      const currentData = getCurrentHoleData();
+
+      if (!currentData) return; // Ensure currentData is not undefined
+
+      const updatedShotHistory = currentData.shotHistory
+        ? [...currentData.shotHistory, { x: xPercent + "%", y: yPercent + "%" }]
+        : [{ x: xPercent + "%", y: yPercent + "%" }];
+
+      setCurrentHoleData({
+        ...currentData,
+        shotHistory: updatedShotHistory,
+        score: currentData.score + 1,
+      });
     }
   };
 
@@ -293,7 +342,10 @@ const Tracking = () => {
             }}
           >
             <h1 className="font-archivo font-black text-green-700 text-8xl">
-              {score}
+              {players[0]?.holes[currentHole]?.score ||
+              players[0]?.holes[currentHole]?.score === 0
+                ? players[0]?.holes[currentHole]?.score
+                : "-"}
             </h1>
           </div>
         </div>
@@ -325,7 +377,9 @@ const Tracking = () => {
             }}
           >
             <h1 className="font-archivo font-black text-green-700 text-4xl">
-              {totalScore}
+              {players[0]?.holes
+                .slice(0, currentHole + 1)
+                .reduce((acc, curr) => acc + curr.score, 0)}
             </h1>
           </div>
         </div>
@@ -382,7 +436,10 @@ const Tracking = () => {
             }}
           >
             <h1 className="font-archivo font-black text-green-700 text-4xl">
-              {putts}
+              {players[0]?.holes[currentHole]?.putts ||
+              players[0]?.holes[currentHole]?.putts === 0
+                ? players[0]?.holes[currentHole]?.putts
+                : "-"}
             </h1>
           </div>
         </div>
@@ -390,7 +447,8 @@ const Tracking = () => {
         <CircularButton icon="minus" onClick={decrementPutts} />
       </div>
       <div className="grid grid-rows-2 grid-cols-1 h-48 items-center absolute right-4">
-        {shotHistory.length > 1 ? (
+        {currentHoleData.shotHistory &&
+        currentHoleData.shotHistory.length > 1 ? (
           <CircularButton icon="undo" onClick={undoShot} />
         ) : (
           <div className="h-16 w-16"></div>

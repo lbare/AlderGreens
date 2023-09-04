@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import CustomButton from "../components/CustomButton";
 import { Player, ScoreContext } from "../contexts/ScoreContext";
 
@@ -13,6 +13,10 @@ const Scorecard = () => {
   };
 
   const duplicatedStartingLetters: string[] = findDuplicates(players);
+
+  useEffect(() => {
+    console.log(players[0].holes);
+  }, [players]);
 
   return (
     <div className="flex w-full h-full justify-center">
@@ -42,23 +46,33 @@ const Scorecard = () => {
                   setPlayers((prevPlayers) => {
                     const updatedPlayers = [...prevPlayers];
                     const playerIndex = selectedCell % players.length;
-                    console.log("playerIndex", playerIndex);
-                    console.log("selectedCell % 9", selectedCell % 9);
 
-                    updatedPlayers[playerIndex].scores[
-                      Math.floor(selectedCell / players.length)
-                    ] = score;
-                    console.log(updatedPlayers[playerIndex].scores);
+                    const holeIndex = Math.floor(selectedCell / players.length);
+
+                    // Check if the player already has data for this hole
+                    if (!updatedPlayers[playerIndex].holes[holeIndex]) {
+                      updatedPlayers[playerIndex].holes[holeIndex] = {
+                        shotHistory: [],
+                        score: 0,
+                      };
+                    }
+
+                    // Update the score for the current hole
+                    updatedPlayers[playerIndex].holes[holeIndex].score = score;
+
+                    // Recalculate totalScore
+                    updatedPlayers[playerIndex].totalScore = updatedPlayers[
+                      playerIndex
+                    ].holes.reduce((sum, hole) => sum + hole.score, 0);
 
                     return updatedPlayers;
                   });
                   setShowPopup(false);
-                  console.log(players);
                 }}
                 isClicked={
-                  players[selectedCell % players.length].scores[
+                  players[selectedCell % players.length].holes[
                     Math.floor(selectedCell / players.length)
-                  ] === score
+                  ].score === score
                 }
                 isTitle={false}
                 title={score.toString()}
@@ -81,7 +95,7 @@ const Scorecard = () => {
                 className="flex w-full h-full justify-center items-center"
                 key={i}
               >
-                <h1 className="font-archivo font-black text-xl italic text-white">
+                <h1 className="font-archivo font-bold text-xl italic text-white">
                   {i + 1}
                 </h1>
               </div>
@@ -136,9 +150,9 @@ const Scorecard = () => {
                 }}
               >
                 <h1 className="font-black font-archivo text-4xl text-green-700">
-                  {players[i % players.length].scores[
+                  {players[i % players.length].holes[
                     Math.floor(i / players.length)
-                  ] || ""}
+                  ].score || ""}
                 </h1>
               </div>
             ))}

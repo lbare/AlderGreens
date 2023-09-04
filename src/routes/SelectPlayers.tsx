@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HomeBG from "../assets/HomeBG.png";
 import CustomButton from "../components/CustomButton";
 import CircularButton from "../components/CircularButton";
@@ -19,17 +19,32 @@ const SelectPlayers = () => {
     "Spencer",
   ]);
 
+  useEffect(() => {
+    // clear scores if new names are selected/deselected
+    setPlayers((prevPlayers) => {
+      return prevPlayers.map((player) => {
+        return {
+          ...player,
+          scores: [],
+          holes: Array(9).fill({ shotHistory: [], score: 0 }),
+        };
+      });
+    });
+  }, [setPlayers]);
+
   const handleButtonPress = (playerName: string) => {
     setPlayers((prevSelected) => {
       const index = prevSelected.findIndex(
         (player) => player.name === playerName
       );
       if (index === -1) {
+        // When adding, initialize holes with an empty array
         return [
           ...prevSelected,
           {
             name: playerName,
-            scores: [],
+            holes: Array(9).fill({ shotHistory: [], score: 0 }),
+            currentHole: 0,
           },
         ];
       } else {
@@ -46,7 +61,8 @@ const SelectPlayers = () => {
         ...prevSelected,
         {
           name: name,
-          scores: [],
+          holes: Array(9).fill({ shotHistory: [], score: 0 }),
+          currentHole: 0,
         },
       ]);
     }

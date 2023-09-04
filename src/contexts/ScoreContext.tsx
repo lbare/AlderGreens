@@ -1,8 +1,21 @@
 import { Context, createContext } from "react";
 
+export type Hole = {
+  putts?: number;
+  score: number;
+  shotHistory?: Array<{
+    x: string;
+    y: string;
+    length?: string;
+    angle?: number;
+  }>;
+};
+
 export type Player = {
   name: string;
-  scores: number[];
+  currentHole: number;
+  totalScore?: number;
+  holes: Hole[];
 };
 
 interface ScoreContextProps {
