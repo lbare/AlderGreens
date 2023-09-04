@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import CustomButton from "../components/CustomButton";
 import { Player, ScoreContext } from "../contexts/ScoreContext";
 
@@ -13,10 +13,6 @@ const Scorecard = () => {
   };
 
   const duplicatedStartingLetters: string[] = findDuplicates(players);
-
-  useEffect(() => {
-    console.log(players[0].holes);
-  }, [players]);
 
   return (
     <div className="flex w-full h-full justify-center">
@@ -45,6 +41,7 @@ const Scorecard = () => {
                 onClick={() => {
                   setPlayers((prevPlayers) => {
                     const updatedPlayers = [...prevPlayers];
+
                     const playerIndex = selectedCell % players.length;
 
                     const holeIndex = Math.floor(selectedCell / players.length);

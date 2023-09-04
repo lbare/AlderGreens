@@ -26,7 +26,9 @@ const SelectPlayers = () => {
         return {
           ...player,
           scores: [],
-          holes: Array(9).fill({ shotHistory: [], score: 0 }),
+          holes: Array(9)
+            .fill(null)
+            .map(() => ({ score: 0 })),
         };
       });
     });
@@ -43,7 +45,9 @@ const SelectPlayers = () => {
           ...prevSelected,
           {
             name: playerName,
-            holes: Array(9).fill({ shotHistory: [], score: 0 }),
+            holes: Array(9)
+              .fill(null)
+              .map(() => ({ score: 0 })),
             currentHole: 0,
           },
         ];
