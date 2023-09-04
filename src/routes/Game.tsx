@@ -5,7 +5,7 @@ import BottomBar from "../components/BottomBar";
 
 const Game = () => {
   const [activePage, setActivePage] = useState<"scorecard" | "tracking">(
-    "tracking"
+    "scorecard"
   );
 
   return (
