@@ -50,15 +50,14 @@ const Tracking = () => {
 
   useEffect(() => {
     const holeData = getCurrentHoleData();
-      localStorage.setItem("currentHole", currentHole.toString());
+    localStorage.setItem("currentHole", currentHole.toString());
 
-    if (holeData && holeData.putts) {
+    if (holeData) {
       // If data already exists for the hole, just return
       return;
     }
 
     setCurrentHoleData({
-      ...holeData,
       putts: 0,
       score: 0,
       shotHistory: [
@@ -74,14 +73,17 @@ const Tracking = () => {
   const currentHoleData = getCurrentHoleData();
 
   useEffect(() => {
+    const svg = d3.select(svgRef.current);
+
     if (
       !currentHoleData ||
       !currentHoleData.shotHistory ||
       currentHoleData.shotHistory.length < 1
-    )
+    ) {
+      svg.selectAll("*").remove();
       return;
+    }
 
-    const svg = d3.select(svgRef.current);
     if (!svg.node()) return; // check if the node exists to make TypeScript happy
 
     svg.selectAll("*").remove(); // clear previous lines and balls
@@ -190,7 +192,7 @@ const Tracking = () => {
       .attr("stroke-width", "6px")
       .attr("paint-order", "stroke fill")
       .attr("filter", "url(#dropshadow)");
-  }, [currentHoleData]);
+  }, [currentHoleData, currentHole]);
 
   const incrementPutts = () => {
     const currentData = getCurrentHoleData();
