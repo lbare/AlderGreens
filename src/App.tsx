@@ -39,6 +39,19 @@ function App() {
     localStorage.setItem("lastRoute", location.pathname);
   }, [location.pathname]);
 
+  useEffect(() => {
+    // Load players from localStorage
+    const players = localStorage.getItem("players");
+    if (players) {
+      setPlayers(JSON.parse(players));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Save players to localStorage whenever it changes
+    localStorage.setItem("players", JSON.stringify(players));
+  }, [players]);
+
   return (
     <ScoreContext.Provider
       value={{
