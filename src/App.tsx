@@ -3,6 +3,7 @@ import Home from "./routes/Home";
 import Scorecard from "./routes/Scorecard";
 import SelectPlayers from "./routes/SelectPlayers";
 import Game from "./routes/Game";
+import Scores from "./routes/Scores";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { Player, ScoreContext } from "./contexts/ScoreContext";
@@ -72,6 +73,7 @@ function App() {
           <Route path="/selectPlayers" element={<SelectPlayers />} />
           <Route path="/scorecard" element={<Scorecard />} />
           <Route path="/tracking" element={<Game />} />
+          <Route path="/scores" element={<Scores />} />
         </Routes>
       </div>
     </ScoreContext.Provider>
