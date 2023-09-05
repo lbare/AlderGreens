@@ -111,16 +111,36 @@ const Scorecard = () => {
                 key={i}
               >
                 <h1 className="text-white font-archivo text-3xl italic font-black">
-                  {duplicatedStartingLetters.includes(player.name[0])
-                    ? player.name.slice(0, 2)
-                    : player.name[0]}
+                  {players.length !== 1
+                    ? duplicatedStartingLetters.includes(player.name[0])
+                      ? player.name.slice(0, 2)
+                      : player.name[0]
+                    : player.name}
                 </h1>
               </div>
             ))}
           </div>
           <div
-            className={`grid grid-cols-${players.length} grid-rows-10 mb-5 mr-3 rounded-2xl bg-white`}
-            style={{ height: "70vh", width: "85vw" }}
+            className={`grid ${
+              players.length === 4
+                ? "grid-cols-4"
+                : players.length === 3
+                ? "grid-cols-3"
+                : players.length === 2
+                ? "grid-cols-2"
+                : "grid-cols-1"
+            } grid-rows-10 mb-5 mr-3 rounded-2xl bg-white`}
+            style={{
+              height: "70vh",
+              width:
+                players.length === 4
+                  ? "85vw"
+                  : players.length === 3
+                  ? "65vw"
+                  : players.length === 2
+                  ? "45vw"
+                  : "25vw",
+            }}
           >
             {[...Array(players.length * 9)].map((_, i) => (
               <div
@@ -136,8 +156,10 @@ const Scorecard = () => {
                     ? "rounded-bl-2xl"
                     : ""
                 } flex border-y border-green-200 border-opacity-50 justify-center items-center ${
-                  i % 2 !== 0 ? "bg-green-100" : ""
-                }`}
+                  players.length === 4 && i % 2 !== 0 ? "bg-green-100" : ""
+                } ${
+                  players.length === 3 && i % 3 === 1 ? "bg-green-100" : ""
+                } ${players.length === 2 && i % 2 === 1 ? "bg-green-100" : ""}`}
                 style={{
                   minHeight: "7vh",
                 }}
