@@ -6,9 +6,9 @@ import { ScoreContext } from "../contexts/ScoreContext";
 import { useNavigate } from "react-router-dom";
 
 const Game = () => {
-  const [activePage, setActivePage] = useState<"scorecard" | "tracking">(
-    "scorecard"
-  );
+  const [activePage, setActivePage] = useState<
+    "tracking" | "scorecard" | "games" | "leaderboard"
+  >("scorecard");
   const { players } = useContext(ScoreContext);
   const navigate = useNavigate();
 
@@ -19,7 +19,11 @@ const Game = () => {
   return (
     <div className="flex h-full w-full">
       {activePage === "scorecard" ? <Scorecard /> : <Tracking />}
-      <BottomBar activePage={activePage} setActivePage={setActivePage} />
+      <BottomBar
+        activePage={activePage}
+        setActivePage={setActivePage}
+        type="current"
+      />
     </div>
   );
 };

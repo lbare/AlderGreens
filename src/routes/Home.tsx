@@ -36,7 +36,7 @@ const Home = () => {
         {wasOnTrackingPage && (
           <CustomButton title="Resume Game" isTitle={true} page="tracking" />
         )}
-        <CustomButton title="Scores" isTitle={true} page="" />
+        <CustomButton title="Scores" isTitle={true} page="scores" />
       </div>
     </div>
   );
