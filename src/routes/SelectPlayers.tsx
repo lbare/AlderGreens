@@ -21,6 +21,7 @@ const SelectPlayers = () => {
 
   useEffect(() => {
     // clear scores if new names are selected/deselected
+    localStorage.removeItem("currentHole");
     setPlayers((prevPlayers) => {
       return prevPlayers.map((player) => {
         return {
