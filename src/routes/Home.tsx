@@ -1,11 +1,10 @@
 import CustomButton from "../components/CustomButton";
 import HomeBG from "../assets/HomeBG.png";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { ScoreContext } from "../contexts/ScoreContext";
 
 const Home = () => {
   const { setPlayers } = useContext(ScoreContext);
-  const [isClicked, setIsClicked] = useState(false);
   const wasOnTrackingPage =
     localStorage.getItem("lastRoute") === "/tracking" ||
     localStorage.getItem("lastRoute") === "/selectPlayers";
@@ -18,27 +17,6 @@ const Home = () => {
         backgroundSize: "cover",
       }}
     >
-      <CustomButton
-        title="Play"
-        isTitle={true}
-        classNameText="absolute w-1/4 top-0 left-0"
-        hidden={true}
-        onClick={() => {
-          setIsClicked(true);
-          setTimeout(() => {
-            setIsClicked(false);
-          }, 1000);
-        }}
-      />
-      {isClicked && (
-        <CustomButton
-          hidden={true}
-          title="Play"
-          isTitle={true}
-          page="multipleTracking"
-          classNameText="absolute w-1/4 top-0 right-0"
-        />
-      )}
       <div
         className={`flex w-3/4 flex-col justify-between items-center ${
           wasOnTrackingPage ? "h-1/2" : "h-1/3"
