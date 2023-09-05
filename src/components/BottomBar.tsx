@@ -13,13 +13,13 @@ interface BottomBarProps extends React.HTMLAttributes<HTMLDivElement> {
 const BottomBar = (props: BottomBarProps) => {
   return (
     <div
-      className="flex justify-between items-center w-2/3 h-16 left-0 right-0 ml-auto mr-auto absolute bg-white rounded-full bottom-4 border-4 border-green-700"
+      className="flex justify-between items-center w-1/2 h-16 left-0 right-0 ml-auto mr-auto absolute bg-white rounded-full bottom-4 border-4 border-green-700"
       style={{
         boxShadow: "5px 5px #2d603a",
       }}
     >
       <div
-        className={`flex w-full justify-center items-center h-5/6 z-10 transition-color duration-300 ${
+        className={`flex w-full pl-2 justify-center items-center h-5/6 z-10 transition-color duration-300 ${
           props.activePage === "tracking" ? "text-white" : "text-green-700"
         }`}
         onClick={() => props.setActivePage("tracking")}
@@ -40,7 +40,7 @@ const BottomBar = (props: BottomBarProps) => {
         />
       </div>
       <div
-        className={`flex w-full justify-center items-center h-5/6 z-10 transition-color duration-300 ${
+        className={`flex w-full pr-2 justify-center items-center h-5/6 z-10 transition-color duration-300 ${
           props.activePage === "scorecard" ? "text-white" : "text-green-700"
         }`}
         onClick={() => props.setActivePage("scorecard")}

@@ -5,6 +5,8 @@ import {
   ArrowArcLeft,
   ArrowRight,
   ArrowLeft,
+  SkipForward,
+  SkipBack,
 } from "@phosphor-icons/react";
 
 interface CircularButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
@@ -44,12 +46,22 @@ const CircularButton = (props: CircularButtonProps) => {
             weight="bold"
             color="#2D603A"
           />
-        ) : (
+        ) : props.icon === "back" ? (
           <ArrowLeft
             size={props.iconSize || 30}
             weight="bold"
             color="#2D603A"
           />
+        ) : props.icon === "skip forward" ? (
+          <SkipForward
+            size={props.iconSize || 30}
+            weight="fill"
+            color="#2D603A"
+          />
+        ) : props.icon === "skip back" ? (
+          <SkipBack size={props.iconSize || 30} weight="fill" color="#2D603A" />
+        ) : (
+          ""
         )}
       </button>
     </div>

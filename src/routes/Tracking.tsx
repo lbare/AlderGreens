@@ -245,6 +245,8 @@ const Tracking = () => {
   };
 
   const prevHole = () => {
+    console.log("prevHole");
+
     if (currentHole === 0) return;
     setCurrentHole((prevHole) => prevHole - 1);
   };
@@ -284,7 +286,7 @@ const Tracking = () => {
       }}
     >
       <div className="flex w-full mt-2 justify-evenly absolute top-0">
-        <div className="flex flex-col mt-3 items-center" onClick={prevHole}>
+        <div className="flex flex-col mt-3 items-center">
           <div className="flex items-center justify-center relative">
             <h1
               className="font-bold italic font-archivo absolute z-10"
@@ -441,7 +443,7 @@ const Tracking = () => {
               {players[0]?.holes[currentHole]?.putts ||
               players[0]?.holes[currentHole]?.putts === 0
                 ? players[0]?.holes[currentHole]?.putts
-                : "-"}
+                : "--"}
             </h1>
           </div>
         </div>
@@ -457,6 +459,16 @@ const Tracking = () => {
         )}
         <CircularButton icon="check" onClick={submitScore} />
       </div>
+      {currentHole !== 0 && (
+        <div className="absolute bottom-0 left-0 flex w-1/2 px-4 mb-4 justify-start">
+          <CircularButton icon="skip back" onClick={prevHole} />
+        </div>
+      )}
+      {currentHole !== 8 && (
+        <div className="absolute bottom-0 right-0 flex w-1/2 px-4 mb-4 justify-end">
+          <CircularButton icon="skip forward" onClick={submitScore} />
+        </div>
+      )}
     </div>
   );
 };
