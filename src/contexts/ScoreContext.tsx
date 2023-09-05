@@ -1,14 +1,16 @@
 import { Context, createContext } from "react";
 
+export type Shot = {
+  x: string;
+  y: string;
+  length?: string;
+  angle?: number;
+};
+
 export type Hole = {
   putts?: number;
   score: number;
-  shotHistory?: Array<{
-    x: string;
-    y: string;
-    length?: string;
-    angle?: number;
-  }>;
+  shotHistory?: Shot[];
 };
 
 export type Player = {
