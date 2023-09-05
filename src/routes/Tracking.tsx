@@ -432,7 +432,7 @@ const Tracking = () => {
             </h1>
           </div>
           <div
-            className="p-2 px-4 border-4 border-green-700 rounded-xl bg-white items-center justify-center"
+            className="flex w-16 p-2 px-4 min-w-max border-4 border-green-700 rounded-xl bg-white items-center justify-center"
             style={{
               boxShadow: "5px 5px #2d603a",
             }}
