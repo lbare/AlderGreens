@@ -99,7 +99,7 @@ const SelectPlayers = () => {
     >
       <div className="flex w-full h-1/6 flex-col items-center justify-center relative">
         <h1
-          className="text-4xl font-black font-archivo absolute z-10"
+          className="text-4xl font-black italic font-archivo absolute z-10"
           style={{
             color: "white",
           }}
@@ -107,7 +107,7 @@ const SelectPlayers = () => {
           Select Players:
         </h1>
         <h1
-          className="text-4xl font-black font-archivo absolute"
+          className="text-4xl font-black italic font-archivo absolute"
           style={{
             color: "#2d603a",
             WebkitTextStroke: "6px #2d603a",
