@@ -71,6 +71,10 @@ const SelectPlayers = () => {
   };
 
   const addName = () => {
+    if (players.length >= 6) {
+      alert("You can select up to 6 players only."); // Optional feedback to user
+      return;
+    }
     const name = prompt("Enter a name");
     if (name) {
       setNames((prevNames) => [...prevNames, name]);
