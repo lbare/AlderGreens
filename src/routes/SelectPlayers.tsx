@@ -44,8 +44,13 @@ const SelectPlayers = () => {
       const index = prevSelected.findIndex(
         (player) => player.name === playerName
       );
+
+      if (index === -1 && prevSelected.length >= 6) {
+        alert("You can select up to 6 players only."); // Optional feedback to user
+        return prevSelected;
+      }
+
       if (index === -1) {
-        // When adding, initialize holes with an empty array
         return [
           ...prevSelected,
           {
