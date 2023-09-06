@@ -20,15 +20,27 @@ export type Player = {
   holes: Hole[];
 };
 
+export type Game = {
+  name: {
+    holes: number[];
+    score: number;
+  };
+  date: string;
+};
+
 interface ScoreContextProps {
   players: Player[];
   setPlayers: (
     players: Player[] | ((prevPlayers: Player[]) => Player[])
   ) => void;
+  pastGames?: Game[];
+  setPastGames?: (games: Game[] | ((prevGames: Game[]) => Game[])) => void;
 }
 
 export const ScoreContext: Context<ScoreContextProps> =
   createContext<ScoreContextProps>({
     players: [],
     setPlayers: () => {},
+    pastGames: [],
+    setPastGames: () => {},
   });
