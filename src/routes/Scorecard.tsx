@@ -207,24 +207,31 @@ const Scorecard = () => {
 
       {/* Main Content */}
       <div
-        className={`flex w-full flex-row bg-green-700 ${
+        className={`flex flex-row ${
           players.length > 2 ? "justify-start" : "justify-center"
-        } items-end rounded-b-3xl`}
+        } items-end mt-4`}
         style={{
-          height: "86%",
+          height: "84%",
+          width: "95%",
         }}
       >
         <div
-          className="flex flex-col w-1/12 items-center mb-4"
+          className="flex flex-col h-full justify-center items-center bg-green-700 rounded-l-3xl"
           style={{
-            height: "90%",
+            height: "93%",
+            width: players.length > 2 ? "12%" : "15%",
           }}
         >
           {/* Hole #'s */}
-          <div className="flex flex-col w-full h-full">
+          <div
+            className="flex flex-col w-full h-full mb-2"
+            style={{
+              height: "99%",
+            }}
+          >
             {[...Array(9)].map((_, i) => (
               <div
-                className="flex w-full h-full justify-center items-center"
+                className="flex w-full h-full justify-center pl-2 items-center"
                 key={i}
               >
                 <h1 className="font-archivo font-bold text-xl italic text-white">
@@ -235,20 +242,25 @@ const Scorecard = () => {
           </div>
         </div>
         <div
-          className="flex h-full flex-col justify-center items-center"
+          className="flex h-full flex-col justify-center items-start bg-green-700 rounded-t-3xl rounded-r-3xl"
           style={{
             width:
               players.length === 6 ||
               players.length === 5 ||
               players.length === 4 ||
               players.length === 3
-                ? "89%"
+                ? "93%"
                 : players.length === 2
                 ? "75%"
                 : "45%",
           }}
         >
-          <div className="flex w-full h-10 flex-row justify-center items-center">
+          <div
+            className="flex w-full h-10 flex-row ml-2 justify-center items-center"
+            style={{
+              width: "94%",
+            }}
+          >
             {players.map((player, i) => (
               <div
                 className="flex h-full w-full justify-center items-end"
@@ -256,9 +268,9 @@ const Scorecard = () => {
               >
                 <h1
                   className={`text-white font-archivo ${
-                    players.length === 6
+                    players.length === 6 || players.length === 3
                       ? "text-xl"
-                      : players.length === 5 || players.length === 3
+                      : players.length === 5 || players.length === 2
                       ? "text-2xl"
                       : "text-3xl"
                   } font-black`}
@@ -287,10 +299,10 @@ const Scorecard = () => {
                 : players.length === 2
                 ? "grid-cols-2"
                 : "grid-cols-1"
-            } grid-rows-10 mb-3 rounded-2xl bg-white`}
+            } grid-rows-10 mb-3 ml-2 rounded-2xl bg-white`}
             style={{
               height: "100%",
-              width: "100%",
+              width: players.length > 1 ? "94%" : "90%",
             }}
           >
             {[...Array(players.length * 9)].map((_, i) => (
