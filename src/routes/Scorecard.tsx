@@ -93,7 +93,7 @@ const Scorecard = () => {
   };
 
   return (
-    <div className="flex w-full h-full justify-center">
+    <div className="flex w-full h-full justify-center items-start">
       {/* Score Popup */}
       {showScorePopup && (
         <div
@@ -207,20 +207,21 @@ const Scorecard = () => {
 
       {/* Main Content */}
       <div
-        className="flex w-full flex-row bg-green-700 justify-center items-end rounded-b-3xl"
-        style={{ marginBottom: "23%" }}
+        className={`flex w-full flex-row bg-green-700 ${
+          players.length > 2 ? "justify-start" : "justify-center"
+        } items-end rounded-b-3xl`}
+        style={{
+          height: "86%",
+        }}
       >
         <div
-          className="flex flex-col h-full w-full items-center"
+          className="flex flex-col w-1/12 items-center mb-4"
           style={{
-            width: "10vw",
+            height: "90%",
           }}
         >
           {/* Hole #'s */}
-          <div
-            className="flex flex-col w-1/2 mt-8 v"
-            style={{ height: "70vh" }}
-          >
+          <div className="flex flex-col w-full h-full">
             {[...Array(9)].map((_, i) => (
               <div
                 className="flex w-full h-full justify-center items-center"
@@ -233,28 +234,38 @@ const Scorecard = () => {
             ))}
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center">
-          <div
-            className="flex flex-row justify-center items-center mr-3"
-            style={{
-              width:
-                players.length === 4
-                  ? "85vw"
-                  : players.length === 3
-                  ? "60vw"
-                  : players.length === 2
-                  ? "40vw"
-                  : "20vw",
-            }}
-          >
+        <div
+          className="flex h-full flex-col justify-center items-center"
+          style={{
+            width:
+              players.length === 6 ||
+              players.length === 5 ||
+              players.length === 4 ||
+              players.length === 3
+                ? "89%"
+                : players.length === 2
+                ? "75%"
+                : "45%",
+          }}
+        >
+          <div className="flex w-full h-10 flex-row justify-center items-center">
             {players.map((player, i) => (
               <div
-                className="flex justify-center items-center"
-                style={{ width: players.length === 4 ? "24%" : "100%" }}
+                className="flex h-full w-full justify-center items-end"
                 key={i}
               >
-                <h1 className="text-white font-archivo text-3xl italic font-black">
-                  {players.length !== 1
+                <h1
+                  className={`text-white font-archivo ${
+                    players.length === 6
+                      ? "text-xl"
+                      : players.length === 5 || players.length === 3
+                      ? "text-2xl"
+                      : "text-3xl"
+                  } italic font-black`}
+                >
+                  {players.length !== 1 &&
+                  players.length !== 2 &&
+                  players.length !== 3
                     ? duplicatedStartingLetters.includes(player.name[0])
                       ? player.name.slice(0, 2)
                       : player.name[0]
@@ -265,24 +276,21 @@ const Scorecard = () => {
           </div>
           <div
             className={`grid ${
-              players.length === 4
+              players.length === 6
+                ? "grid-cols-6"
+                : players.length === 5
+                ? "grid-cols-5"
+                : players.length === 4
                 ? "grid-cols-4"
                 : players.length === 3
                 ? "grid-cols-3"
                 : players.length === 2
                 ? "grid-cols-2"
                 : "grid-cols-1"
-            } grid-rows-10 mb-5 mr-3 rounded-2xl bg-white`}
+            } grid-rows-10 mb-3 rounded-2xl bg-white`}
             style={{
-              height: "70vh",
-              width:
-                players.length === 4
-                  ? "85vw"
-                  : players.length === 3
-                  ? "65vw"
-                  : players.length === 2
-                  ? "45vw"
-                  : "25vw",
+              height: "100%",
+              width: "100%",
             }}
           >
             {[...Array(players.length * 9)].map((_, i) => (
@@ -303,17 +311,22 @@ const Scorecard = () => {
                     : players.length === 1 && i === 8
                     ? "rounded-b-2xl"
                     : ""
-                } flex border-y border-green-200 border-opacity-50 justify-center items-center ${
-                  players.length === 4 && i % 2 !== 0 ? "bg-green-100" : ""
-                } ${
+                } flex border-y border-green-200 border-opacity-50 min-h-min justify-center items-center
+                  ${players.length === 6 && i % 2 !== 0 ? "bg-green-100" : ""}
+                  ${
+                    players.length === 5 && (i % 5 === 1 || i % 5 === 3)
+                      ? "bg-green-100"
+                      : ""
+                  }
+                ${players.length === 4 && i % 2 !== 0 ? "bg-green-100" : ""} ${
                   players.length === 3 && i % 3 === 1 ? "bg-green-100" : ""
                 } ${players.length === 2 && i % 2 === 1 ? "bg-green-100" : ""}`}
-                style={{
-                  minHeight: "7vh",
-                }}
                 onClick={() => {
                   setShowScorePopup(true);
                   setSelectedCell(i);
+                }}
+                style={{
+                  minHeight: "7vh",
                 }}
               >
                 <h1 className="font-black font-archivo text-4xl text-green-700">
