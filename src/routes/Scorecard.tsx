@@ -261,7 +261,7 @@ const Scorecard = () => {
                       : players.length === 5 || players.length === 3
                       ? "text-2xl"
                       : "text-3xl"
-                  } italic font-black`}
+                  } font-black`}
                 >
                   {players.length !== 1 &&
                   players.length !== 2 &&
