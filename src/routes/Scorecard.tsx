@@ -342,7 +342,21 @@ const Scorecard = () => {
                 }}
               >
                 <div
-                  className={`flex w-12 h-12 justify-center items-center border-2 border-orange-300 rounded-xl`}
+                  className={`flex w-12 h-12 justify-center items-center ${
+                    players[i % players.length].holes[
+                      Math.floor(i / players.length)
+                    ].score === 2
+                      ? "border-green-500 border-2 rounded-full"
+                      : players[i % players.length].holes[
+                          Math.floor(i / players.length)
+                        ].score === 4
+                      ? "border-red-300 border-2 rounded-xl"
+                      : players[i % players.length].holes[
+                          Math.floor(i / players.length)
+                        ].score > 4
+                      ? "border-red-300 border-8 border-double rounded-xl"
+                      : ""
+                  }`}
                 >
                   <h1 className="font-black font-archivo text-4xl text-green-700">
                     {players[i % players.length].holes[
