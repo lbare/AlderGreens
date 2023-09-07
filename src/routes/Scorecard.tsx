@@ -341,11 +341,15 @@ const Scorecard = () => {
                   minHeight: "7vh",
                 }}
               >
-                <h1 className="font-black font-archivo text-4xl text-green-700">
-                  {players[i % players.length].holes[
-                    Math.floor(i / players.length)
-                  ].score || ""}
-                </h1>
+                <div
+                  className={`flex w-12 h-12 justify-center items-center border-2 border-orange-300 rounded-xl`}
+                >
+                  <h1 className="font-black font-archivo text-4xl text-green-700">
+                    {players[i % players.length].holes[
+                      Math.floor(i / players.length)
+                    ].score || ""}
+                  </h1>
+                </div>
               </div>
             ))}
           </div>
