@@ -2,7 +2,7 @@ import "./App.css";
 import Home from "./routes/Home";
 import Scorecard from "./routes/Scorecard";
 import SelectPlayers from "./routes/SelectPlayers";
-import Game from "./routes/Game";
+import Game from "./routes/CurrentGame";
 import Scores from "./routes/Scores";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
