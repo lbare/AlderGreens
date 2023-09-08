@@ -5,7 +5,7 @@ import BottomBar from "../components/BottomBar";
 import { ScoreContext } from "../contexts/ScoreContext";
 import { useNavigate } from "react-router-dom";
 
-const Game = () => {
+const CurrentGame = () => {
   const [activePage, setActivePage] = useState<
     "tracking" | "scorecard" | "games" | "leaderboard"
   >("scorecard");
@@ -28,4 +28,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default CurrentGame;
