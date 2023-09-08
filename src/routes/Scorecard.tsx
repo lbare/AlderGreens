@@ -5,6 +5,7 @@ import { Player, ScoreContext } from "../contexts/ScoreContext";
 import CircularButton from "../components/CircularButton";
 import { addGame } from "../firebase/config";
 import { Shot } from "../contexts/ScoreContext";
+import { RotatingLines } from "react-loader-spinner";
 
 type ScoreHistoryEntry = {
   playerIndex: number;
@@ -15,6 +16,8 @@ type ScoreHistoryEntry = {
 const Scorecard = () => {
   const [showScorePopup, setShowScorePopup] = useState(false);
   const [showSubmitPopup, setShowSubmitPopup] = useState(false);
+  const [showFinalScorePopup, setShowFinalScorePopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedCell, setSelectedCell] = useState(0);
   const [scoreHistory, setScoreHistory] = useState<ScoreHistoryEntry[]>([]);
   const { players, setPlayers } = useContext(ScoreContext);
@@ -75,17 +78,16 @@ const Scorecard = () => {
 
   const submitScore = async () => {
     try {
+      setIsLoading(true);
+
       // Transformation happens here before sending to firebase:
       const transformedPlayers = transformPlayersData(players);
 
       // Call addGame with the transformed players object
       await addGame(transformedPlayers).finally(() => {
-        // navigate home
-        navigate("/");
-        localStorage.removeItem("lastRoute");
-        localStorage.removeItem("players");
-        localStorage.removeItem("currentHole");
-        setPlayers([]);
+        setIsLoading(false);
+        setShowSubmitPopup(false);
+        setShowFinalScorePopup(true);
       });
     } catch (error) {
       console.log(error);
@@ -176,29 +178,93 @@ const Scorecard = () => {
             }}
             onClick={(event) => event.stopPropagation()}
           >
+            {!isLoading ? (
+              <>
+                <div className="flex w-full flex-col justify-center items-center">
+                  <h1 className="font-archivo text-center font-black text-3xl text-green-700">
+                    Submit?
+                  </h1>
+                </div>
+                <div className="flex flex-row">
+                  <CustomButton
+                    className="flex bg-green-700 text-white rounded"
+                    classNameButton="w-24"
+                    onClick={() => {
+                      setShowSubmitPopup(false);
+                    }}
+                    isTitle={false}
+                    title="No"
+                  />
+                  <CustomButton
+                    className="flex bg-green-700 text-white rounded"
+                    classNameButton="w-24"
+                    onClick={() => {
+                      submitScore();
+                    }}
+                    isTitle={false}
+                    title="Yes"
+                  />
+                </div>
+              </>
+            ) : (
+              <RotatingLines
+                strokeColor="#2d603a"
+                strokeWidth="4"
+                animationDuration="0.85"
+                width="50"
+              />
+            )}
+          </div>
+        </div>
+      )}
+      {/* Final Score Popup */}
+      {showFinalScorePopup && (
+        <div
+          className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-50 bg-gray-500 z-10"
+          onClick={() => setShowSubmitPopup(false)}
+        >
+          <div
+            className="flex flex-wrap justify-center items-center basis-2/3 bg-white border-green-700 border-4 p-4 rounded-xl shadow-lg"
+            style={{
+              boxShadow: "6px 6px #2d603a",
+            }}
+            onClick={(event) => event.stopPropagation()}
+          >
             <div className="flex w-full flex-col justify-center items-center">
               <h1 className="font-archivo text-center font-black text-3xl text-green-700">
-                Submit?
+                Final Scores
               </h1>
+            </div>
+            <div className="flex flex-col w-full justify-center items-center py-10 pr-4">
+              {players
+                .sort((a, b) => a.totalScore - b.totalScore)
+                .map((player, i) => (
+                  <div
+                    className="flex w-full flex-row justify-evenly items-center"
+                    key={i}
+                  >
+                    <h1 className="font-archivo text-right font-bold text-2xl text-green-700 w-1/2">
+                      {player.name}:
+                    </h1>
+                    <h1 className="font-archivo font-bold text-2xl text-green-700 text-left">
+                      {player.totalScore}
+                    </h1>
+                  </div>
+                ))}
             </div>
             <div className="flex flex-row">
               <CustomButton
                 className="flex bg-green-700 text-white rounded"
-                classNameButton="w-24"
-                onClick={() => {
-                  setShowSubmitPopup(false);
-                }}
                 isTitle={false}
-                title="No"
-              />
-              <CustomButton
-                className="flex bg-green-700 text-white rounded"
-                classNameButton="w-24"
+                title="Home"
                 onClick={() => {
-                  submitScore();
+                  setShowFinalScorePopup(false);
+                  localStorage.removeItem("lastRoute");
+                  localStorage.removeItem("players");
+                  localStorage.removeItem("currentHole");
+                  setPlayers([]);
+                  navigate("/");
                 }}
-                isTitle={false}
-                title="Yes"
               />
             </div>
           </div>
@@ -350,11 +416,15 @@ const Scorecard = () => {
                       : players[i % players.length].holes[
                           Math.floor(i / players.length)
                         ].score === 4
-                      ? "border-red-300 border-2 rounded-xl"
+                      ? "border-red-400 border-2 rounded-xl"
                       : players[i % players.length].holes[
                           Math.floor(i / players.length)
                         ].score > 4
-                      ? "border-red-300 border-8 border-double rounded-xl"
+                      ? "border-red-400 border-8 border-double rounded-xl"
+                      : players[i % players.length].holes[
+                          Math.floor(i / players.length)
+                        ].score === 1
+                      ? "border-green-500 border-8 border-double rounded-full"
                       : ""
                   }`}
                 >

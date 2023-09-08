@@ -45,6 +45,10 @@ const Tracking = () => {
   const setCurrentHoleData = (data: Hole) => {
     const updatedPlayers = [...players];
     updatedPlayers[0].holes[currentHole] = data;
+    updatedPlayers[0].totalScore = updatedPlayers[0].holes.reduce(
+      (acc, curr) => acc + curr.score,
+      0
+    );
     setPlayers(updatedPlayers);
   };
 

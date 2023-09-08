@@ -59,6 +59,7 @@ export const addGame = async (
 
     const docRef = await addDoc(collection(db, "games"), game);
     console.log("Document written with ID: ", docRef.id);
+    return docRef.id;
   } catch (e) {
     console.error("Error adding document: ", e);
   }
