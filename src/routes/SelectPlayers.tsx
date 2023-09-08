@@ -62,6 +62,7 @@ const SelectPlayers = () => {
                 shotHistory: [{ x: "50.5%", y: "90.8%" }],
               })),
             currentHole: 0,
+            totalScore: 0,
           },
         ];
       } else {
@@ -84,6 +85,7 @@ const SelectPlayers = () => {
           name: name,
           holes: Array(9).fill({ shotHistory: [], score: 0 }),
           currentHole: 0,
+          totalScore: 0,
         },
       ]);
     }
