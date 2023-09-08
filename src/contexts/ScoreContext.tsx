@@ -16,7 +16,7 @@ export type Hole = {
 export type Player = {
   name: string;
   currentHole: number;
-  totalScore?: number;
+  totalScore: number;
   holes: Hole[];
 };
 
