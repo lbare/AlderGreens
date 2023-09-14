@@ -1,7 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { getApps, initializeApp, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  addDoc,
+} from "firebase/firestore";
 import { Hole } from "../contexts/ScoreContext";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -63,6 +69,27 @@ export const addGame = async (
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+};
+
+export const getGames = async () => {
+  const gamesCollection = collection(db, "games"); // Reference to the games collection
+  const q = query(gamesCollection); // Construct a query (in this case, retrieving all documents from the collection)
+  const querySnapshot = await getDocs(q);
+  const games:
+    | {
+        id: string;
+        [key: string]:
+          | {
+              score?: number;
+              holes?: number[]; 
+              shotHistory?: string[];
+            }
+          | string;
+      }[] = [];
+  querySnapshot.forEach((doc) => {
+    games.push({ id: doc.id, ...doc.data() }); // Get the document ID and its data
+  });
+  return games; // Return an array of games
 };
 
 export { auth, db };
