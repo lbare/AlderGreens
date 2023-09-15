@@ -20,7 +20,12 @@ const Scorecard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCell, setSelectedCell] = useState(0);
   const [scoreHistory, setScoreHistory] = useState<ScoreHistoryEntry[]>([]);
-  const { players, setPlayers } = useContext(ScoreContext);
+  const {
+    players,
+    setPlayers,
+    // pastGames = [],
+    // setPastGames = () => {},
+  } = useContext(ScoreContext);
   const navigate = useNavigate();
 
   const findDuplicates = (players: Player[]): string[] => {
@@ -88,6 +93,7 @@ const Scorecard = () => {
         setIsLoading(false);
         setShowSubmitPopup(false);
         setShowFinalScorePopup(true);
+        // TODO: update past games
       });
     } catch (error) {
       console.log(error);
