@@ -6,7 +6,7 @@ import Leaderboard from "./Leaderboard";
 const Scores = () => {
   const [activePage, setActivePage] = useState<
     "tracking" | "scorecard" | "games" | "leaderboard"
-  >("leaderboard");
+  >("games");
 
   return (
     <div className="flex h-full w-full">
