@@ -80,11 +80,9 @@ const PastGameDetail = () => {
                     <div className="flex w-full justify-end">
                       <div className="flex flex-col items-center justify-center mr-8">
                         <h1 className="w-20 font-archivo font-black italic text-center text-green-700">
-                          {" "}
                           To Par
                         </h1>
                         <h1 className="w-20 text-4xl font-archivo font-black text-center text-green-700">
-                          {" "}
                           {toPar > 0 ? `+${toPar}` : toPar.toString()}
                         </h1>
                       </div>

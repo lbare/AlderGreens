@@ -21,13 +21,20 @@ export type Player = {
 };
 
 export type Game = {
-  [playerName: string]:
-    | {
-        holes: number[];
-        score: number;
-      }
-    | string;
+  players: {
+    [playerName: string]: {
+      map(
+        arg0: (
+          hole: number,
+          index: number
+        ) => import("react/jsx-runtime").JSX.Element
+      ): import("react").ReactNode;
+      holes: number[];
+      score: number;
+    };
+  };
   date: string;
+  id?: string;
 };
 
 interface ScoreContextProps {
