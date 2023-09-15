@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "./App.css";
 import Home from "./routes/Home";
 import Scorecard from "./routes/Scorecard";
@@ -39,39 +40,35 @@ function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem("lastRoute", location.pathname);
-  }, [location.pathname]);
-
-  useEffect(() => {
     const savedPlayers = localStorage.getItem("players");
     if (savedPlayers) {
       setPlayers(JSON.parse(savedPlayers));
     }
 
-    const storedGames = localStorage.getItem("pastGames");
-    if (storedGames) {
-      setPastGames(JSON.parse(storedGames));
-    }
-  }, []);
-
-  useEffect(() => {
     const fetchGames = async () => {
-      const newGames = await getGames(true); // This fetches only the new games.
-      // Use a set to ensure unique games based on some identifier, e.g., game ID.
-      const uniqueGames = [...pastGames, ...newGames].filter(
-        (v, i, a) => a.findIndex((t) => t.id === v.id) === i
-      );
-      setPastGames(uniqueGames as Game[]);
+      const newGames = await getGames(true);
+      setPastGames((prevGames) => [...prevGames, ...newGames] as Game[]);
     };
 
     fetchGames();
+  }, []);
+
+  useEffect(() => {
+    console.log(pastGames);
   }, [pastGames]);
 
   useEffect(() => {
+    localStorage.setItem("lastRoute", location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
+  }, [players]);
+
+  useEffect(() => {
     localStorage.setItem("pastGames", JSON.stringify(pastGames));
     localStorage.setItem("lastUpdated", new Date().toISOString());
-  }, [players, pastGames]);
+  }, [pastGames]);
 
   return (
     <ScoreContext.Provider
