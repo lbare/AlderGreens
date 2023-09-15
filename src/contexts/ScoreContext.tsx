@@ -21,10 +21,12 @@ export type Player = {
 };
 
 export type Game = {
-  name: {
-    holes: number[];
-    score: number;
-  };
+  [playerName: string]:
+    | {
+        holes: number[];
+        score: number;
+      }
+    | string;
   date: string;
 };
 
