@@ -1,16 +1,17 @@
+interface Score {
+  score?: number;
+  holes?: number[];
+  shotHistory?: string[];
+}
+
 interface DropdownProps {
   game: {
-    id: string;
+    id?: string;
     date: string;
-    [key: string]:
-      | {
-          score?: number;
-          holes?: number[];
-          shotHistory?: string[];
-        }
-      | string;
+    [key: string]: Score | string | undefined;
   };
   singleGame?: boolean;
+  onClick?: () => void;
 }
 
 const Dropdown = (props: DropdownProps) => {
@@ -26,6 +27,7 @@ const Dropdown = (props: DropdownProps) => {
         style={{
           boxShadow: "7px 7px #2d603a",
         }}
+        onClick={props.onClick}
       >
         <div className="flex flex-row w-5/6 border border-red-500">
           <h1 className="text-4xl font-archivo font-black italic text-green-700">
@@ -44,6 +46,7 @@ const Dropdown = (props: DropdownProps) => {
       style={{
         boxShadow: "7px 7px #2d603a",
       }}
+      onClick={props.onClick}
     >
       <div className="flex flex-row w-5/6 border justify-center items-center border-red-500">
         <h1 className="text-4xl font-archivo font-black italic text-green-700">
