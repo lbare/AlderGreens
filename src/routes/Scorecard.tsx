@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
-import { Player, ScoreContext } from "../contexts/ScoreContext";
+import { Game, Player, ScoreContext } from "../contexts/ScoreContext";
 import CircularButton from "../components/CircularButton";
 import { addGame } from "../firebase/config";
 import { Shot } from "../contexts/ScoreContext";
@@ -23,8 +23,7 @@ const Scorecard = () => {
   const {
     players,
     setPlayers,
-    // pastGames = [],
-    // setPastGames = () => {},
+    setPastGames = () => {},
   } = useContext(ScoreContext);
   const navigate = useNavigate();
 
@@ -85,16 +84,15 @@ const Scorecard = () => {
     try {
       setIsLoading(true);
 
-      // Transformation happens here before sending to firebase:
       const transformedPlayers = transformPlayersData(players);
 
-      // Call addGame with the transformed players object
-      await addGame(transformedPlayers).finally(() => {
-        setIsLoading(false);
-        setShowSubmitPopup(false);
-        setShowFinalScorePopup(true);
-        // TODO: update past games
-      });
+      const newGame = await addGame(transformedPlayers);
+      if (!newGame) throw new Error("Failed to add game");
+      setIsLoading(false);
+      setShowSubmitPopup(false);
+      setShowFinalScorePopup(true);
+      setPastGames((prevGames) => [...prevGames, newGame] as Game[]);
+      navigate(`/past-games/${newGame.id}`);
     } catch (error) {
       console.log(error);
     }
