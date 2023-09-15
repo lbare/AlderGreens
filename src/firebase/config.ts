@@ -76,7 +76,10 @@ export const addGame = async (
 
     const docRef = await addDoc(collection(db, "games"), game);
     console.log("Document written with ID: ", docRef.id);
-    return docRef.id;
+    return {
+      id: docRef.id,
+      ...game,
+    };
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -84,21 +87,18 @@ export const addGame = async (
 
 export const getGames = async (newOnly = false) => {
   const gamesCollection = collection(db, "games");
+  const lastDateStr = localStorage.getItem("lastUpdated");
 
   let q;
-  if (newOnly) {
-    const lastDate = localStorage.getItem("lastDate") || "";
-
-    // This query will get games with dates after the provided lastDate
+  if (newOnly && lastDateStr) {
+    console.log("lastDate", lastDateStr);
     q = query(
       gamesCollection,
-      where("date", ">", lastDate),
-      orderBy("date") // You need to order by date if you're using where() with ">"
+      where("date", "<=", lastDateStr),
+      orderBy("date")
     );
-    console.log("LOADED NEW");
   } else {
-    q = query(gamesCollection); // Construct a query to retrieve all documents from the collection
-    console.log("LOADED ALL");
+    q = query(gamesCollection);
   }
 
   const querySnapshot = await getDocs(q);
@@ -118,6 +118,7 @@ export const getGames = async (newOnly = false) => {
   querySnapshot.forEach((doc) => {
     games.push({ id: doc.id, ...(doc.data() as GameData) });
   });
+  console.log("games", games);
 
   return games;
 };
