@@ -25,17 +25,17 @@ const PastGameDetail = () => {
   return (
     <div className="flex flex-col w-full h-full justify-start items-center">
       <div className="flex flex-col w-full h-32 bg-green-700 justify-center items-center">
-        <h1 className="font-archivo font-black text-3xl text-white">
+        <h1 className="font-archivo font-black italic text-4xl text-white">
           {game?.date
             ? new Date(game.date).toLocaleDateString("en-US", {
                 timeZone: "America/Los_Angeles",
                 month: "long",
               })
-            : "No date found"}
+            : ""}
           {"   "}
           {game?.date && getOrdinalSuffix(new Date(game.date).getDate())}
         </h1>
-        <h1 className="font-archivo font-bold text-xl text-white italic">
+        <h1 className="font-archivo font-bold text-xl text-white">
           {game?.date
             ? new Date(game.date).toLocaleTimeString("en-US", {
                 timeZone: "America/Los_Angeles",
@@ -99,19 +99,6 @@ const PastGameDetail = () => {
                   </div>
 
                   <div className="flex flex-row w-full justify-start items-center mt-2 border-4 border-green-700 rounded-xl">
-                    <div className="flex flex-col h-full w-full justify-center items-center">
-                      <div className="flex flex-col w-full justify-center items-start bg-green-700">
-                        <h1 className="text-lg font-archivo font-bold text-center text-white pl-1">
-                          Hole
-                        </h1>
-                      </div>
-                      <div className="flex flex-col h-full w-full justify-center items-center">
-                        <h1 className="text-lg font-archivo font-black text-center text-green-700 pl-1">
-                          Score
-                        </h1>
-                      </div>
-                    </div>
-
                     {value.holes.map((hole, index) => (
                       <div className="flex flex-col w-full justify-center items-center">
                         <div className="flex flex-col w-full justify-center items-center bg-green-700">
@@ -119,7 +106,19 @@ const PastGameDetail = () => {
                             {index + 1}
                           </h1>
                         </div>
-                        <div className="flex flex-col w-full justify-center items-center">
+                        <div
+                          className={`flex flex-col w-8 h-8 justify-center items-center my-1 ${
+                            hole === 2
+                              ? "border-green-500 border-2 rounded-full"
+                              : hole === 4
+                              ? "border-red-400 border-2 rounded-md"
+                              : hole > 4
+                              ? "border-red-400 border-8 border-double rounded-md"
+                              : hole === 1
+                              ? "border-green-500 border-8 border-double rounded-full"
+                              : ""
+                          }`}
+                        >
                           <h1 className="text-lg font-archivo font-black text-center text-green-700">
                             {hole}
                           </h1>
