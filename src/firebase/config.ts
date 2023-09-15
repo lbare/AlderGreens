@@ -1,12 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { getApps, initializeApp, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   collection,
   getDocs,
   query,
   addDoc,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { Hole } from "../contexts/ScoreContext";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,9 +23,19 @@ const firebaseConfig = {
   appId: "1:24728706255:web:ab2f4c89038db499db6bba",
 };
 
+type GameData = {
+  [key: string]:
+    | string
+    | {
+        score?: number;
+        holes?: number[];
+        shotHistory?: string[];
+      };
+  date: string;
+};
+
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
 const db = getFirestore(app);
 
 export const addGame = async (
@@ -71,9 +82,25 @@ export const addGame = async (
   }
 };
 
-export const getGames = async () => {
-  const gamesCollection = collection(db, "games"); // Reference to the games collection
-  const q = query(gamesCollection); // Construct a query (in this case, retrieving all documents from the collection)
+export const getGames = async (newOnly = false) => {
+  const gamesCollection = collection(db, "games");
+
+  let q;
+  if (newOnly) {
+    const lastDate = localStorage.getItem("lastDate") || "";
+
+    // This query will get games with dates after the provided lastDate
+    q = query(
+      gamesCollection,
+      where("date", ">", lastDate),
+      orderBy("date") // You need to order by date if you're using where() with ">"
+    );
+    console.log("LOADED NEW");
+  } else {
+    q = query(gamesCollection); // Construct a query to retrieve all documents from the collection
+    console.log("LOADED ALL");
+  }
+
   const querySnapshot = await getDocs(q);
   const games:
     | {
@@ -81,15 +108,18 @@ export const getGames = async () => {
         [key: string]:
           | {
               score?: number;
-              holes?: number[]; 
+              holes?: number[];
               shotHistory?: string[];
             }
           | string;
+        date: string;
       }[] = [];
+
   querySnapshot.forEach((doc) => {
-    games.push({ id: doc.id, ...doc.data() }); // Get the document ID and its data
+    games.push({ id: doc.id, ...(doc.data() as GameData) });
   });
-  return games; // Return an array of games
+
+  return games;
 };
 
-export { auth, db };
+export { db };
