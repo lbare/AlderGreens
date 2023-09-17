@@ -12,10 +12,6 @@ const PastGameDetail = () => {
     setGame(game);
   }, [pastGames, gameId]);
 
-  useEffect(() => {
-    console.log("game", game);
-  }, []);
-
   function getOrdinalSuffix(n: number) {
     const s = ["th", "st", "nd", "rd"];
     const v = n % 100;
@@ -100,7 +96,10 @@ const PastGameDetail = () => {
 
                   <div className="flex flex-row w-full justify-start items-center mt-2 border-4 border-green-700 rounded-xl">
                     {value.holes.map((hole, index) => (
-                      <div className="flex flex-col w-full justify-center items-center">
+                      <div
+                        key={index}
+                        className="flex flex-col w-full justify-center items-center"
+                      >
                         <div className="flex flex-col w-full justify-center items-center bg-green-700">
                           <h1 className="text-lg font-archivo font-bold text-center text-white">
                             {index + 1}
