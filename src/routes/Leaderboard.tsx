@@ -136,7 +136,10 @@ const Leaderboard = () => {
       {showPopup && (
         <div
           className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-50 bg-gray-500 z-10"
-          onClick={() => setShowPopup(false)}
+          onClick={() => {
+            setShowPopup(false);
+            setPopupPageActive(false);
+          }}
         >
           <div
             className="flex flex-wrap w-full justify-center mx-6 items-between bg-white border-green-700 border-4 p-4 rounded-xl shadow-lg"
@@ -261,7 +264,7 @@ const Leaderboard = () => {
           </div>
         </div>
       )}
-      <div className="flex w-full h-1/5 flex-col items-center justify-center relative">
+      <div className="flex w-full h-1/4 flex-col items-center justify-center">
         <h1
           className="text-4xl font-black font-archivo absolute z-10"
           style={{
@@ -311,42 +314,47 @@ const Leaderboard = () => {
                 key={index}
                 ref={(el) => (gameRef.current[index] = el)}
               >
-                <div
-                  className="flex flex-col h-16 w-full justify-center mx-4 items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
-                  style={{
-                    boxShadow: "7px 7px #2d603a",
-                  }}
-                  key={index}
-                  onClick={() => {
-                    setShowPopup(true);
-                    setActivePlayer(key);
-                  }}
-                >
-                  <div className="flex w-full justify-between items-center h-full flex-row px-2">
-                    {displayIndex === 1 ? (
-                      <Medal size={32} color="#2d603a" weight="fill" />
-                    ) : displayedTiedRankRef.current ? (
-                      ""
-                    ) : (
-                      <h1
-                        className={`font-archivo font-black text-right text-3xl text-green-700`}
-                      >
-                        {displayIndex}.
-                      </h1>
-                    )}
-                    <div className="flex justify-center items-center">
-                      <h1 className="font-archivo font-black text-3xl text-green-700">
-                        {key}
-                      </h1>
-                    </div>
+                {!showPopup ? (
+                  <div
+                    className="flex flex-col h-16 justify-center items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
+                    style={{
+                      boxShadow: "7px 7px #2d603a",
+                      width: "95%",
+                    }}
+                    key={index}
+                    onClick={() => {
+                      setShowPopup(true);
+                      setActivePlayer(key);
+                    }}
+                  >
+                    <div className="flex w-full justify-between items-center h-full flex-row px-2">
+                      {displayIndex === 1 ? (
+                        <Medal size={32} color="#2d603a" weight="fill" />
+                      ) : displayedTiedRankRef.current ? (
+                        ""
+                      ) : (
+                        <h1
+                          className={`font-archivo font-black text-right text-3xl text-green-700`}
+                        >
+                          {displayIndex}.
+                        </h1>
+                      )}
+                      <div className="flex justify-center items-center">
+                        <h1 className="font-archivo font-black text-3xl text-green-700">
+                          {key}
+                        </h1>
+                      </div>
 
-                    <div className="flex flex-col h-full flex-wrap justify-center items-center">
-                      <h1 className="font-archivo font-black text-3xl text-green-700">
-                        {value}
-                      </h1>
+                      <div className="flex flex-col h-full flex-wrap justify-center items-center">
+                        <h1 className="font-archivo font-black text-3xl text-green-700">
+                          {value}
+                        </h1>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="flex flex-col h-16 justify-center items-center p-2 my-2" />
+                )}
               </div>
             );
           })}
