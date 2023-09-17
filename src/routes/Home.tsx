@@ -5,9 +5,7 @@ import { ScoreContext } from "../contexts/ScoreContext";
 
 const Home = () => {
   const { setPlayers } = useContext(ScoreContext);
-  const wasOnTrackingPage =
-    localStorage.getItem("lastRoute") === "/tracking" ||
-    localStorage.getItem("lastRoute") === "/selectPlayers";
+  const wasOnTrackingPage = localStorage.getItem("lastRoute") === "/tracking";
 
   return (
     <div

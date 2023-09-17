@@ -14,27 +14,23 @@ import { getGames } from "./firebase/config";
 
 function App() {
   const containerRef = useRef(null);
-  const location = useLocation(); // Get current location
-  const [height, setHeight] = useState("100vh"); // default to full viewport height
+  const location = useLocation();
+  const [height, setHeight] = useState("100vh");
   const [players, setPlayers] = useState<Player[]>([]);
   const [pastGames, setPastGames] = useState<Game[]>([]);
 
   useEffect(() => {
-    // Compute and set the actual visible height
     const resize = () => {
       if (containerRef.current) {
         setHeight(`${window.innerHeight}px`);
       }
     };
 
-    // Set initial height
     resize();
 
-    // Listen to resize events (e.g., when address bar hides or shows in mobile browsers)
     window.addEventListener("resize", resize);
 
     return () => {
-      // Cleanup event listener
       window.removeEventListener("resize", resize);
     };
   });
@@ -52,10 +48,6 @@ function App() {
 
     fetchGames();
   }, []);
-
-  useEffect(() => {
-    console.log(pastGames);
-  }, [pastGames]);
 
   useEffect(() => {
     localStorage.setItem("lastRoute", location.pathname);
