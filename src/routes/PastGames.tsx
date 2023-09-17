@@ -26,18 +26,19 @@ const PastGames = () => {
           width: "95%",
         }}
       >
-        {sortedGames.map((game) => (
+        {sortedGames.map((game, index) => (
           <div
             className="flex flex-col h-16 justify-center items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
             style={{
               boxShadow: "7px 7px #2d603a",
               width: "95%",
             }}
+            key={index}
             onClick={() => navigate(`/past-games/${game.id}`)}
           >
             <div className="flex w-full justify-center items-center h-full flex-row px-2">
               <div className="flex justify-center items-center mr-4">
-                <h2 className="font-archivo font-black text-3xl text-white">
+                <h2 className="font-archivo font-black text-3xl text-green-700">
                   {game?.date
                     ? new Date(game.date).toLocaleDateString("en-US", {
                         timeZone: "America/Los_Angeles",
@@ -61,7 +62,7 @@ const PastGames = () => {
                       typeof game[key as keyof typeof game] === "object"
                   )
                   .map((playerName) => (
-                    <div className="flex flex-col w-10 h-10 items-center justify-center border bg-green-700 rounded-full">
+                    <div className="flex flex-col w-10 h-10 items-center justify-center bg-green-700 rounded-full">
                       <h1 className="font-archivo font-extrabold text-center text-sm text-white">
                         {playerName[0]}
                       </h1>
@@ -70,16 +71,6 @@ const PastGames = () => {
               </div>
             </div>
           </div>
-
-          // <Dropdown
-          //   game={game}
-          //   singleGame={false}
-          //   onClick={() => {
-          //     console.log("clicked");
-
-          //     navigate(`/past-games/${game.id}`);
-          //   }}
-          // />
         ))}
       </div>
     </div>
