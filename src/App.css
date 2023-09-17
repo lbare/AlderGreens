@@ -3,14 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-h2 {
-  color: white;
-  stroke: #2d603a;
-  text-shadow: 3px 3px 0 #2d603a;
-  -webkit-text-stroke: 5px #2d603a;
-  paint-order: stroke fill;
-}
-
 body,
 html {
   margin: 0;
