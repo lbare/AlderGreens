@@ -2,6 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import { ScoreContext } from "../contexts/ScoreContext";
 import { RotatingLines } from "react-loader-spinner";
 import { Medal, CaretLeft, CaretRight } from "@phosphor-icons/react";
+import "../App.css";
 
 type Game = {
   [key: string]:
@@ -21,6 +22,34 @@ const Leaderboard = () => {
   const prevScoreRef = useRef<number | null>(null);
   const prevIndexRef = useRef<number | null>(null);
   const displayedTiedRankRef = useRef<boolean>(false);
+  const gameRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("fade-out");
+          entry.target.classList.add("fade-in");
+        } else {
+          entry.target.classList.remove("fade-in");
+          entry.target.classList.add("fade-out");
+        }
+      });
+    };
+
+    const options: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, options);
+
+    gameRef.current.forEach((game) => game && observer.observe(game));
+
+    return () =>
+      gameRef.current.forEach((game) => game && observer.unobserve(game));
+  }, [topScores]);
 
   useEffect(() => {
     pastGames?.forEach((game) => {
@@ -45,7 +74,6 @@ const Leaderboard = () => {
           }
         });
     });
-    console.log(topScores);
   });
 
   function calcWorstScore(player: string) {
@@ -111,9 +139,10 @@ const Leaderboard = () => {
           onClick={() => setShowPopup(false)}
         >
           <div
-            className="flex flex-wrap justify-center items-between w-3/4 h-2/3 bg-white border-green-700 border-4 p-4 rounded-xl shadow-lg"
+            className="flex flex-wrap w-full justify-center mx-6 items-between bg-white border-green-700 border-4 p-4 rounded-xl shadow-lg"
             style={{
               boxShadow: "6px 6px #2d603a",
+              height: "60%",
             }}
             onClick={(event) => event.stopPropagation()}
           >
@@ -232,8 +261,23 @@ const Leaderboard = () => {
           </div>
         </div>
       )}
-      <div className="flex flex-col w-full h-24 bg-green-700 justify-center items-center">
-        <h1 className="font-archivo font-black italic text-4xl text-white">
+      <div className="flex w-full h-1/5 flex-col items-center justify-center relative">
+        <h1
+          className="text-4xl font-black font-archivo absolute z-10"
+          style={{
+            color: "white",
+          }}
+        >
+          Leaderboard
+        </h1>
+        <h1
+          className="text-4xl font-black font-archivo absolute"
+          style={{
+            color: "#2d603a",
+            WebkitTextStroke: "6px #2d603a",
+            textShadow: "3px 3px 0px #2d603a",
+          }}
+        >
           Leaderboard
         </h1>
       </div>
@@ -265,22 +309,10 @@ const Leaderboard = () => {
               <div
                 className="flex w-full justify-center items-center"
                 key={index}
+                ref={(el) => (gameRef.current[index] = el)}
               >
-                <div className="flex w-10 justify-end items-center">
-                  {displayIndex === 1 ? (
-                    <Medal size={32} color="white" weight="fill" />
-                  ) : displayedTiedRankRef.current ? (
-                    ""
-                  ) : (
-                    <h1
-                      className={`font-archivo font-black text-right text-3xl text-white`}
-                    >
-                      {displayIndex}.
-                    </h1>
-                  )}
-                </div>
                 <div
-                  className="flex flex-col h-16 w-2/3 justify-center mx-4 items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
+                  className="flex flex-col h-16 w-full justify-center mx-4 items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
                   style={{
                     boxShadow: "7px 7px #2d603a",
                   }}
@@ -291,6 +323,17 @@ const Leaderboard = () => {
                   }}
                 >
                   <div className="flex w-full justify-between items-center h-full flex-row px-2">
+                    {displayIndex === 1 ? (
+                      <Medal size={32} color="#2d603a" weight="fill" />
+                    ) : displayedTiedRankRef.current ? (
+                      ""
+                    ) : (
+                      <h1
+                        className={`font-archivo font-black text-right text-3xl text-green-700`}
+                      >
+                        {displayIndex}.
+                      </h1>
+                    )}
                     <div className="flex justify-center items-center">
                       <h1 className="font-archivo font-black text-3xl text-green-700">
                         {key}

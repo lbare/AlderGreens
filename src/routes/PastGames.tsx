@@ -1,21 +1,63 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ScoreContext } from "../contexts/ScoreContext";
+import "../App.css";
 
 const PastGames = () => {
   const { pastGames = [] } = useContext(ScoreContext);
   const navigate = useNavigate();
+  const gameRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const sortedGames = [...pastGames].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  useEffect(() => console.log(sortedGames));
+  useEffect(() => {
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove("fade-out");
+          entry.target.classList.add("fade-in");
+        } else {
+          entry.target.classList.remove("fade-in");
+          entry.target.classList.add("fade-out");
+        }
+      });
+    };
+
+    const options: IntersectionObserverInit = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, options);
+
+    gameRef.current.forEach((game) => game && observer.observe(game));
+
+    return () =>
+      gameRef.current.forEach((game) => game && observer.unobserve(game));
+  }, [sortedGames]);
 
   return (
     <div className="flex flex-col w-full h-full justify-start items-center">
-      <div className="flex flex-col w-full h-48 bg-green-700 justify-center items-center">
-        <h1 className="font-archivo font-black italic text-4xl text-white">
+      <div className="flex w-full h-1/3 flex-col items-center justify-center relative">
+        <h1
+          className="text-4xl font-black italic font-archivo absolute z-10"
+          style={{
+            color: "white",
+          }}
+        >
+          Past Games
+        </h1>
+        <h1
+          className="text-4xl font-black italic font-archivo absolute"
+          style={{
+            color: "#2d603a",
+            WebkitTextStroke: "6px #2d603a",
+            textShadow: "3px 3px 0px #2d603a",
+          }}
+        >
           Past Games
         </h1>
       </div>
@@ -28,6 +70,7 @@ const PastGames = () => {
       >
         {sortedGames.map((game, index) => (
           <div
+            ref={(el) => (gameRef.current[index] = el)}
             className="flex flex-col h-16 justify-center items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
             style={{
               boxShadow: "7px 7px #2d603a",

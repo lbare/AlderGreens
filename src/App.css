@@ -20,6 +20,18 @@ body {
   ); /* Ensuring content isn't obscured by device's notch or rounded corners */
 }
 
+.fade-in {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 0.5s ease-in-out;
+}
+
+.fade-out {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
 .line-connector::before {
   content: "";
   position: absolute;
