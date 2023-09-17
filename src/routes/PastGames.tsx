@@ -41,7 +41,7 @@ const PastGames = () => {
 
   return (
     <div className="flex flex-col w-full h-full justify-start items-center">
-      <div className="flex w-full h-1/3 flex-col items-center justify-center relative">
+      <div className="flex w-full h-1/3 flex-col items-center justify-center">
         <h1
           className="text-4xl font-black italic font-archivo absolute z-10"
           style={{
@@ -71,7 +71,7 @@ const PastGames = () => {
         {sortedGames.map((game, index) => (
           <div
             ref={(el) => (gameRef.current[index] = el)}
-            className="flex flex-col h-16 justify-center items-center p-2 bg-white rounded-xl border-4 border-green-700 my-2"
+            className="flex flex-col h-16 justify-center items-center py-2 bg-white rounded-xl border-4 border-green-700 my-2"
             style={{
               boxShadow: "7px 7px #2d603a",
               width: "95%",
@@ -79,9 +79,9 @@ const PastGames = () => {
             key={index}
             onClick={() => navigate(`/past-games/${game.id}`)}
           >
-            <div className="flex w-full justify-center items-center h-full flex-row px-2">
+            <div className="flex w-full justify-start items-center h-full flex-row px-2">
               <div className="flex justify-center items-center mr-4">
-                <h2 className="font-archivo font-black text-3xl text-green-700">
+                <h2 className="font-archivo font-black text-2xl text-green-700">
                   {game?.date
                     ? new Date(game.date).toLocaleDateString("en-US", {
                         timeZone: "America/Los_Angeles",
@@ -92,11 +92,7 @@ const PastGames = () => {
                 </h2>
               </div>
 
-              <div
-                className={
-                  "flex flex-col w-full h-full flex-wrap justify-center items-center"
-                }
-              >
+              <div className="flex flex-col w-full h-full flex-wrap justify-center items-start">
                 {Object.keys(game)
                   .filter(
                     (key) =>
@@ -104,13 +100,26 @@ const PastGames = () => {
                       key !== "date" &&
                       typeof game[key as keyof typeof game] === "object"
                   )
-                  .map((playerName) => (
-                    <div className="flex flex-col w-10 h-10 items-center justify-center bg-green-700 rounded-full">
-                      <h1 className="font-archivo font-extrabold text-center text-sm text-white">
-                        {playerName[0]}
-                      </h1>
-                    </div>
-                  ))}
+                  .map((playerName) => {
+                    const playerData = game[
+                      playerName as keyof typeof game
+                    ] as unknown as {
+                      score: number;
+                      holes: number[];
+                    };
+                    return (
+                      <>
+                        <div className="flex flex-col w-10 h-12 items-center justify-center bg-green-700 rounded-xl">
+                          <h1 className="font-archivo font-extrabold text-center text-sm text-white">
+                            {playerName[0]}
+                          </h1>
+                          <h1 className="font-archivo font-extrabold text-center text-sm text-white">
+                            {playerData.score}
+                          </h1>
+                        </div>
+                      </>
+                    );
+                  })}
               </div>
             </div>
           </div>
