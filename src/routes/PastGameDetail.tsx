@@ -70,7 +70,7 @@ const PastGameDetail = () => {
                   }}
                 >
                   <div className="flex flex-row w-full items-center justify-between px-3">
-                    <h2 className="text-3xl font-archivo font-black text-center text-white">
+                    <h2 className="text-3xl font-archivo font-black text-center text-green-700">
                       {key}
                     </h2>
                     <div className="flex w-full justify-end">
