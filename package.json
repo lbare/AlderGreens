@@ -11,7 +11,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "homepage": "https://lbare.github.io/golfScores",
+  "homepage": "https://lbare.github.io/AlderGreens",
   "dependencies": {
     "@phosphor-icons/react": "^2.0.10",
     "autoprefixer": "^10.4.14",
