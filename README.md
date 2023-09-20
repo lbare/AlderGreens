@@ -20,9 +20,9 @@
 
 <li><p><strong>Scorecard:</strong></li> <img src="https://github.com/lbare/AlderGreens/assets/47727379/9fa3f8c9-5460-4ff8-ba26-ea9b4dc76b49" width=200 align="top" alt="Scorecard"></p>
 
-<li><p><strong>Leaderboard:</strong></li> <img src="https://github.com/lbare/AlderGreens/assets/47727379/ae223418-075d-4a7e-8499-652f68c2e404" width=200 align="top" alt="Scorecard"></p>
-
 <li><p><strong>Individual Game Details:</strong></li> <img src="https://github.com/lbare/AlderGreens/assets/47727379/d2d9c35c-9284-4e45-929f-e8e0dafd4e7d" width=200 align="top" alt="Game_Details"></p>
+
+<li><p><strong>Leaderboard:</strong></li> <img src="https://github.com/lbare/AlderGreens/assets/47727379/85494973-20db-440e-b34a-d0908f370bd3" width=200 align="top" alt="Scorecard"></p>
 
 </ul>
 <h2 id="live-demo">Live Demo</h2>
