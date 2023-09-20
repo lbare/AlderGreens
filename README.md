@@ -18,15 +18,19 @@ A mobile-only web app designed for a house of golf enthusiasts. Made with React 
 
 ## Screenshots
 
-- **Home Page:** ![Home](https://github.com/lbare/AlderGreens/assets/47727379/96029b03-5d62-4875-832a-386ed83382ab)
+- **Home Page:** ![Home](https://github.com/lbare/AlderGreens/assets/47727379/96029b03-5d62-4875-832a-386ed83382ab | width=100)
 
-- **Hole Tracking:** ![Tracking](https://github.com/lbare/AlderGreens/assets/47727379/bbfeb1b0-c363-41a4-98b4-a59d37467cc9)
+- **Hole Tracking:** ![Tracking](https://github.com/lbare/AlderGreens/assets/47727379/60d21911-f78c-4f9d-9e55-69680f26547b | width=100)
 
-- **Scorecard:** ![Scorecard](https://github.com/lbare/AlderGreens/assets/47727379/b358338d-07a6-48ce-9fbb-cbf9d260757f)
 
-- **Leaderboard:** ![Leaderboard](https://github.com/lbare/AlderGreens/assets/47727379/b256d954-4b9e-4bde-a95c-c9570cfd10fc)
+- **Scorecard:** ![Scorecard](https://github.com/lbare/AlderGreens/assets/47727379/9fa3f8c9-5460-4ff8-ba26-ea9b4dc76b49 | width=100)
 
-- **Individual Game Details:** ![Game Details](https://github.com/lbare/AlderGreens/assets/47727379/0a4921b4-c1db-410c-bc9b-46b678c93525)
+
+- **Leaderboard:** ![Scorecard](https://github.com/lbare/AlderGreens/assets/47727379/ae223418-075d-4a7e-8499-652f68c2e404 | width=100)
+
+
+- **Individual Game Details:** ![Game_Details](https://github.com/lbare/AlderGreens/assets/47727379/d2d9c35c-9284-4e45-929f-e8e0dafd4e7d | width=100)
+
 
 
 ## Live Demo
