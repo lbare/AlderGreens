@@ -1,27 +1,34 @@
-# React + TypeScript + Vite
+# AlderGreens (Golf App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## About
 
-Currently, two official plugins are available:
+A mobile-only web app designed for a house of golf enthusiasts. Made with React and Vite, AlderGreens is perfect for tracking scores and comparing leaderboards among friends and roommates (with future expansion of general use).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Score Tracking:** Input shot locations hole-by-hole for accurate score tracking.
+- **Scorecard:** A digital scorecard for each game session.
+- **Game Details:** Dive deep into each game's scoring details.
+- **Leaderboard:** See who's on top among the group.
+  
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend:** React with Vite
+- **Backend:** Firebase for score storage and retrieval
 
-- Configure the top-level `parserOptions` property like this:
+## Screenshots
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- **Home Page:** ![Home](https://github.com/lbare/AlderGreens/assets/47727379/96029b03-5d62-4875-832a-386ed83382ab)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Hole Tracking:** ![Tracking](https://github.com/lbare/AlderGreens/assets/47727379/bbfeb1b0-c363-41a4-98b4-a59d37467cc9)
+
+- **Scorecard:** ![Scorecard](https://github.com/lbare/AlderGreens/assets/47727379/b358338d-07a6-48ce-9fbb-cbf9d260757f)
+
+- **Leaderboard:** ![Leaderboard](https://github.com/lbare/AlderGreens/assets/47727379/b256d954-4b9e-4bde-a95c-c9570cfd10fc)
+
+- **Individual Game Details:** ![Game Details](https://github.com/lbare/AlderGreens/assets/47727379/0a4921b4-c1db-410c-bc9b-46b678c93525)
+
+
+## Live Demo
+
+Check out the live demo [here](https://lbare.github.io/AlderGreens).
