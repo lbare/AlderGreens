@@ -83,7 +83,7 @@ const SelectPlayers = () => {
         ...prevSelected,
         {
           name: name,
-          holes: Array(9).fill({ shotHistory: [], score: 0 }),
+          holes: Array(9).fill(null).map(() => ({ shotHistory: [], score: 0 })),
           currentHole: 0,
           totalScore: 0,
         },
