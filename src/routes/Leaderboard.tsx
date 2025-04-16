@@ -331,7 +331,11 @@ const Leaderboard = () => {
                       {displayIndex === 1 ? (
                         <Medal size={32} color="#2d603a" weight="fill" />
                       ) : displayedTiedRankRef.current ? (
-                        ""
+                        <h1
+                          className={`font-archivo font-black text-right text-3xl text-green-700`}
+                        >
+                          T{displayIndex}.
+                        </h1>
                       ) : (
                         <h1
                           className={`font-archivo font-black text-right text-3xl text-green-700`}
